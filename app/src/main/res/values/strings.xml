@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">RealmExample</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="save_button">Save</string>
+    <string name="overwrite_button">Overwrite</string>
+    <string name="load_button">Load</string>
+    <string name="delete_button">Delete</string>
+</resources>
