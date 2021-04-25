@@ -3,6 +3,7 @@ package com.honestastrology.realmexample.realm;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -11,38 +12,40 @@ import io.realm.OrderedCollectionChangeSet;
 import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.Credentials;
-import io.realm.mongodb.User;
 import io.realm.mongodb.sync.SyncConfiguration;
 
 class AsyncDatabase implements Database {
     
     private App   _app;
     private Realm _asyncRealm;
-    private Realm _syncRealm;
     
     AsyncDatabase(Context context){
-        Realm.init(context);
-        String appID = "realmexample-hfplt";
-        _app = new App(new AppConfiguration.Builder(appID).build());
-        Credentials credentials = Credentials.anonymous();
-    
-        App.Callback<User> callback = result -> {
-            if (result.isSuccess()) {
-                Log.v("QUICKSTART", "Successfully authenticated anonymously.");
-                User user = _app.currentUser();
-                // interact with realm using your user object here
-            } else {
-                Log.e("QUICKSTART", "Failed to log in. Error: " + result.getError());
-            }
-        };
+//        Realm.init(context);
+        
+//        String appID = "realmexample-hfplt";
+//        _app = new App(new AppConfiguration.Builder(appID).build());
+//        Credentials credentials = Credentials.anonymous();
+//    
+//        App.Callback<User> callback = result -> {
+//            if (result.isSuccess()) {
+//                Log.v("QUICKSTART", "Successfully authenticated anonymously.");
+//                User user = _app.currentUser();
+//                // interact with realm using your user object here
+//            } else {
+//                Log.e("QUICKSTART", "Failed to log in. Error: " + result.getError());
+//            }
+//        };
         
         String realmName = "My Project";
-        RealmConfiguration config = new RealmConfiguration.Builder().name(realmName).build();
-//      
+//        RealmConfiguration config = new RealmConfiguration.Builder().name(realmName).build();
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                                            .name(realmName)
+                                            .allowQueriesOnUiThread(true)
+                                            .allowWritesOnUiThread(true)
+                                            .build();
         _asyncRealm = Realm.getInstance(config);
         addChangeListenerToRealm(_asyncRealm);
         FutureTask<String> Task = new FutureTask(new ExampleTask(), "test");
@@ -51,22 +54,23 @@ class AsyncDatabase implements Database {
     }
     
     @Override
-    public void create(){
+    public void create(RealmObject realmObject){
+        _asyncRealm.executeTransaction (
+                transactionRealm -> transactionRealm.insert(realmObject) );
+    }
+    
+    @Override
+    public <E extends RealmObject> Iterator<E> readAll(Class<E> clazz){
+        return _asyncRealm.where(clazz).findAll().iterator();
+    }
+    
+    @Override
+    public void update(RealmObject realmObject){
         
     }
     
     @Override
-    public void read(){
-        
-    }
-    
-    @Override
-    public void update(){
-        
-    }
-    
-    @Override
-    public void delete(){
+    public void delete(RealmObject realmObject){
         
     }
     

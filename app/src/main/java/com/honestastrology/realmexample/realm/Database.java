@@ -2,24 +2,28 @@ package com.honestastrology.realmexample.realm;
 
 import android.content.Context;
 
+import java.util.Iterator;
+
+import io.realm.RealmObject;
+
 public interface Database {
     
-    static Database initAsync(Context context){
+    public static Database createAsync(Context context){
         return new AsyncDatabase(context);
     }
     
-    static Database initSync(Context context){
-        return new SyncDatabase(context);
+    public static Database createSync(Context context, AppHolder appHolder){
+        return new SyncDatabase(context, appHolder);
     }
     
-    void create();
+    public void create(RealmObject realmObject);
     
-    void read();
+    public <E extends RealmObject> Iterator<E> readAll(Class<E> clazz);
     
-    void update();
+    public void update(RealmObject realmObject);
     
-    void delete();
+    public void delete(RealmObject realmObject);
     
-    void close();
+    public void close();
     
 }
