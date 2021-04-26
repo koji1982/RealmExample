@@ -1,7 +1,9 @@
-package com.honestastrology.realmexample.realm;
+package com.honestastrology.realmexample.dbaccess;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.honestastrology.realmexample.Document;
 
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
@@ -51,6 +53,12 @@ class AsyncDatabase implements Database {
         FutureTask<String> Task = new FutureTask(new ExampleTask(), "test");
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         executorService.execute(Task);
+    }
+    
+    @Override
+    public <E extends RealmObject>
+    Number getMaxPrimaryNumber(Class<E> clazz, String primaryKeyField){
+        return _asyncRealm.where( clazz ).max( primaryKeyField );
     }
     
     @Override

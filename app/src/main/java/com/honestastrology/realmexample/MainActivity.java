@@ -2,14 +2,9 @@ package com.honestastrology.realmexample;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 
-import com.honestastrology.realmexample.realm.Document;
-import com.honestastrology.realmexample.ui.content.Viewer;
-import com.honestastrology.realmexample.ui.control.DocumentCommand;
-import com.honestastrology.realmexample.ui.control.Operator;
+import com.honestastrology.realmexample.ui.layout.Viewer;
+import com.honestastrology.realmexample.dbaccess.DBOperator;
 import com.honestastrology.realmexample.ui.control.Selector;
 import com.honestastrology.realmexample.ui.control.UICommand;
 
@@ -20,20 +15,19 @@ public class MainActivity extends AppCompatActivity
     
     private Viewer<Document>   _viewer;
     private Selector<Document> _buttonSelector;
-    private Operator           _dbOperator;
+    private DBOperator         _dbOperator;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initUI();
-        _dbOperator = Operator.createOperator(this);
-    }
-    
-    private void initUI(){
-        
+        //Android側で定義されているレイアウトの初期化
         setContentView(R.layout.activity_main);
-        _viewer         = Viewer.create(this, Document.class);
+        //インターフェースを実装した自コード側の初期化
+        _viewer         = new DocumentViewer(this);
         _buttonSelector = Selector.create(DocumentCommand.values());
+        _dbOperator     = DBOperator.createSimpleOperator(this);
+        //現在データベースにあるファイルを表示する
+        DocumentCommand.READ.execute(_viewer, _dbOperator);
     }
     
     @Override

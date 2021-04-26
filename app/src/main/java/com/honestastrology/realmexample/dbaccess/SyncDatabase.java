@@ -1,7 +1,9 @@
-package com.honestastrology.realmexample.realm;
+package com.honestastrology.realmexample.dbaccess;
 
 import android.content.Context;
 import android.util.Log;
+
+import java.util.Iterator;
 
 import io.realm.RealmObject;
 import io.realm.mongodb.App;
@@ -37,13 +39,19 @@ class SyncDatabase implements Database {
     }
     
     @Override
+    public <E extends RealmObject>
+    Number getMaxPrimaryNumber(Class<E> clazz, String primaryKeyField){
+        return 0;
+    }
+    
+    @Override
     public void create(RealmObject realmObject){
         
     }
     
     @Override
-    public void readAll(){
-        
+    public <E extends RealmObject> Iterator<E> readAll(Class<E> clazz){
+        return null;
     }
     
     @Override

@@ -1,4 +1,6 @@
-package com.honestastrology.realmexample.realm;
+package com.honestastrology.realmexample.dbaccess;
+
+import com.honestastrology.realmexample.Document;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

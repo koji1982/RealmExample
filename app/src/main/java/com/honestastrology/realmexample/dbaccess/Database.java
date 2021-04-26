@@ -1,4 +1,4 @@
-package com.honestastrology.realmexample.realm;
+package com.honestastrology.realmexample.dbaccess;
 
 import android.content.Context;
 
@@ -16,6 +16,9 @@ public interface Database {
         return new SyncDatabase(context, appHolder);
     }
     
+    public <E extends RealmObject>
+    Number getMaxPrimaryNumber(Class<E> clazz, String primaryKeyField);
+    //新しいRealmObjectを作る場合は一意の@PrimaryKeyを保持していなければならない
     public void create(RealmObject realmObject);
     
     public <E extends RealmObject> Iterator<E> readAll(Class<E> clazz);

@@ -1,4 +1,4 @@
-package com.honestastrology.realmexample.realm;
+package com.honestastrology.realmexample.dbaccess;
 
 import android.util.Log;
 

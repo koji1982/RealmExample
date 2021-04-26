@@ -1,16 +1,13 @@
-package com.honestastrology.realmexample.ui.control;
+package com.honestastrology.realmexample.dbaccess;
 
 import android.content.Context;
-
-import com.honestastrology.realmexample.realm.AppHolder;
-import com.honestastrology.realmexample.realm.Database;
 
 import java.util.Iterator;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
 
-class DBOperator implements Operator {
+class CRUDOperator implements DBOperator {
     
     private AppHolder  _appHolder;
     private Database   _asyncDB;
@@ -18,7 +15,7 @@ class DBOperator implements Operator {
     
     private Database   _currentDatabase;
     
-    DBOperator(Context context){
+    CRUDOperator(Context context){
         Realm.init(context);
         _appHolder = AppHolder.createAppHolder();
         _asyncDB   = Database.createAsync(context);
@@ -41,6 +38,12 @@ class DBOperator implements Operator {
     public void closeAll(){
         _asyncDB.close();
         _syncDB.close();
+    }
+    
+    @Override
+    public <E extends RealmObject>
+    Number getMaxPrimaryNumber(Class<E> clazz, String primaryKeyField){
+        return _currentDatabase.getMaxPrimaryNumber(clazz, primaryKeyField);
     }
     
     @Override

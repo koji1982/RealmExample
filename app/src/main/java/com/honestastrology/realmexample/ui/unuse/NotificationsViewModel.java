@@ -1,4 +1,4 @@
-package com.honestastrology.realmexample.ui.remover;
+package com.honestastrology.realmexample.ui.unuse;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

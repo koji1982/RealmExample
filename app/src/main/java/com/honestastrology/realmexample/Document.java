@@ -1,9 +1,11 @@
-package com.honestastrology.realmexample.realm;
+package com.honestastrology.realmexample;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Document extends RealmObject {
+    
+    public static final String PRIMARY_KEY = "_id";
     
     @PrimaryKey
     private int    _id;
@@ -15,7 +17,9 @@ public class Document extends RealmObject {
     }
     
     public Document(int id){
-        this._id = id;
+        this._id    = id;
+        this._title = "";
+        this._text  = "";
     }
     
     public int getId(){
