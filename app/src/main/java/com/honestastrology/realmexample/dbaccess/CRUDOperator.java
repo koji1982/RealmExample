@@ -37,7 +37,7 @@ class CRUDOperator implements DBOperator {
     @Override
     public void closeAll(){
         _asyncDB.close();
-        _syncDB.close();
+//        _syncDB.close();
     }
     
     @Override

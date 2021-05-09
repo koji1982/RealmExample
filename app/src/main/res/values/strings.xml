@@ -7,4 +7,5 @@
     <string name="overwrite_button">Overwrite</string>
     <string name="load_button">Load</string>
     <string name="delete_button">Delete</string>
+    <string name="back_button">Back</string>
 </resources>

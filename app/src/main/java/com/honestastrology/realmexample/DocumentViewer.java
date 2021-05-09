@@ -1,69 +1,74 @@
 package com.honestastrology.realmexample;
 
 import android.app.Activity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 
+import com.honestastrology.realmexample.ui.layout.LayoutType;
 import com.honestastrology.realmexample.ui.layout.Viewer;
+import com.honestastrology.realmexample.ui.layout.ViewPage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 class DocumentViewer implements Viewer<Document> {
     
-    private static final String[] INIT_TEXT
-            = new String[]{"TITLE 1" + "\n" + "TEXT BODY 1","-----","00000","-----"};
+    private final Activity _activity;
+    private final Map<LayoutType<Document>, ViewPage<Document>> _layoutMap;
     
-    private AdapterView<ArrayAdapter<String>> _listView;
-    
+    private List<Document>  _documentList;
     private Document        _currentSelectedDocument;
     
     DocumentViewer(Activity mainActivity){
-        _listView = mainActivity.findViewById(R.id.db_content_list);
-        ArrayAdapter<String> arrayAdapter
-                = new ArrayAdapter<>(mainActivity, R.layout.text_list);
-        _listView.setAdapter(arrayAdapter);
-        _listView.setOnItemClickListener(new ListClickListener());
+        //レイアウト切り替えをコントロールするため
+        //このクラスでActivity参照を保持する
+        _activity  = mainActivity;
+        //ViewPageを生成する
+        ViewPage<Document> titleListPage = new TitleListPage( mainActivity, this );
+        ViewPage<Document> editPage      = new EditPage( mainActivity, this );
+        //ViewPageはMap内で保持し、使用時はDisplayTypeを指定して取り出す
+        _layoutMap = new HashMap<>();
+        _layoutMap.put( DisplayLayout.TITLE_LIST, titleListPage );
+        _layoutMap.put( DisplayLayout.EDITOR,     editPage      );
+        //RealmObjectを保持するListを初期化
+        _documentList = new ArrayList<>();
+    }
+    
+    @Override
+    public void transitViewPage(LayoutType<Document> nextLayoutType){
+        if( !_layoutMap.containsKey( nextLayoutType ) ){
+            System.out.println( "page transit ERROR. Type-Page Map is NOT contains key.");
+            return;
+        }
+    
+        _activity.setContentView( nextLayoutType.getResource() );
+        ViewPage<Document> nextPage = _layoutMap.get( nextLayoutType );
+        nextPage.showContent();
     }
     
     @Override
     public void setContents(Iterator<Document> iterator){
-        //Iterator内のDocumentからtitleを取り出してListに追加
-        //そのtitleListをListViewとして表示する
-        List<String> titleList   = new ArrayList<>();
+        if( iterator == null )return;
+        _documentList.clear();
         while( iterator.hasNext() ){
-            Document document = iterator.next();
-            String title = document.getTitle();
-            if( title.equals(null)){
-                title = "";
-            }
-            titleList.add( title );
+            _documentList.add( iterator.next() );
         }
-        ArrayAdapter<String> contentsAdapter = _listView.getAdapter();
-        contentsAdapter.clear();
-        contentsAdapter.addAll( titleList );
-        _listView.setAdapter( contentsAdapter );
+    }
+    
+    @Override
+    public List<Document> getContents(){
+        return _documentList;
+    }
+    
+    @Override
+    public void setSelectedContent(Document selectedContent){
+        _currentSelectedDocument = selectedContent;
     }
     
     @Override
     public Document getSelectedContent(){
-        //onItemClick()のパラメータpositionの値をもとに
-        //更新される
         return _currentSelectedDocument;
-    }
-    
-    private static class ListClickListener implements AdapterView.OnItemClickListener {
-        
-        @Override
-        public void onItemClick(AdapterView<?> adapterView,
-                                View view,
-                                int position,
-                                long id){
-            
-        }
     }
     
 }

@@ -50,6 +50,7 @@ class AsyncDatabase implements Database {
                                             .build();
         _asyncRealm = Realm.getInstance(config);
         addChangeListenerToRealm(_asyncRealm);
+        
         FutureTask<String> Task = new FutureTask(new ExampleTask(), "test");
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         executorService.execute(Task);
@@ -69,7 +70,7 @@ class AsyncDatabase implements Database {
     
     @Override
     public <E extends RealmObject> Iterator<E> readAll(Class<E> clazz){
-        return _asyncRealm.where(clazz).findAll().iterator();
+        return _asyncRealm.where(clazz).findAllAsync().iterator();
     }
     
     @Override

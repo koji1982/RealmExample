@@ -20,14 +20,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Android側で定義されているレイアウトの初期化
-        setContentView(R.layout.activity_main);
-        //インターフェースを実装した自コード側の初期化
+        //インターフェースを実装したクラスの初期化
         _viewer         = new DocumentViewer(this);
-        _buttonSelector = Selector.create(DocumentCommand.values());
         _dbOperator     = DBOperator.createSimpleOperator(this);
-        //現在データベースにあるファイルを表示する
+        _buttonSelector = Selector.create(DocumentCommand.values());
+        //現在データベースにあるファイルを読み込む
         DocumentCommand.READ.execute(_viewer, _dbOperator);
+        //起動画面を表示する
+        _viewer.transitViewPage( DisplayLayout.TITLE_LIST );
     }
     
     @Override
@@ -36,6 +36,14 @@ public class MainActivity extends AppCompatActivity
         _dbOperator.closeAll();
     }
     
+    /**
+     * EntryPointとなるMainActivity側から操作する場合は
+     * ここに処理を記述する
+     * 
+     * 他のクラスの状態を取得したい場合等、
+     * 別のクラス側から操作する場合は
+     * こことは別に、そのクラスにリスナー・インターフェースを実装する
+     * */
     @Override
     public void onClick(View view){
         UICommand<Document> clickedCommand 

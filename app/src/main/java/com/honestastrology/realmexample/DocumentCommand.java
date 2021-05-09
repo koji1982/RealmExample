@@ -16,9 +16,9 @@ public enum DocumentCommand implements UICommand<Document> {
             Number maxPrimaryNumber
                     = _dbOperator.getMaxPrimaryNumber( Document.class, Document.PRIMARY_KEY);
             if( maxPrimaryNumber == null ){
-                maxPrimaryNumber = R.integer.default_0;
+                maxPrimaryNumber = Document.INIT_ID;
             }
-            int nextId = (int)maxPrimaryNumber + R.integer.plus_1;
+            int nextId = maxPrimaryNumber.intValue() + Document.NEXT_ID_STRIDE;
             Document newDocument = new Document( nextId );
             _dbOperator.create( newDocument );
         }
@@ -27,6 +27,7 @@ public enum DocumentCommand implements UICommand<Document> {
         @Override
         public void execute(Viewer<Document> viewer, DBOperator _dbOperator){
             viewer.setContents( _dbOperator.readAll(Document.class) );
+            viewer.transitViewPage( DisplayLayout.TITLE_LIST );
         }
     },
     UPDATE    (R.id.update_button){
@@ -46,6 +47,12 @@ public enum DocumentCommand implements UICommand<Document> {
         public void execute(Viewer<Document> viewer, DBOperator _dbOperator){
             System.out.println("   TEXT_LIST   " 
                        + String.valueOf(viewer.getSelectedContent().getId()));
+        }
+    },
+    BACK_FROM_EDIT(R.id.back_from_edit){
+        @Override
+        public void execute(Viewer<Document> viewer, DBOperator _dbOperator){
+            viewer.transitViewPage( DisplayLayout.TITLE_LIST );
         }
     };
     
