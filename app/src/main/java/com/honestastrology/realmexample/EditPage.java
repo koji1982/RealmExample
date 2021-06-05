@@ -1,35 +1,53 @@
 package com.honestastrology.realmexample;
 
-import android.app.Activity;
-import android.view.View;
 import android.widget.TextView;
 
-import com.honestastrology.realmexample.ui.layout.Viewer;
-import com.honestastrology.realmexample.ui.layout.ViewPage;
+import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
+import com.honestastrology.realmexample.ui.view.Viewer;
+import com.honestastrology.realmexample.ui.view.ViewPage;
 
-class EditPage implements ViewPage<Document> ,View.OnClickListener {
+class EditPage implements ViewPage<Document> {
     
-    private Viewer<Document>   _viewer;
-    private TextView           _editView;
-    private Document           _selectedDocument;
+    private final Viewer<Document> _viewer;
+    private final LayoutSwitcher   _layoutSwitcher;
     
-    EditPage(Activity mainActivity, Viewer<Document> viewer){
+    EditPage(MainActivity mainActivity, Viewer<Document> viewer){
         
-        mainActivity.setContentView( R.layout.edit_view );
-        _editView = mainActivity.findViewById( R.id.body_text);
+        _layoutSwitcher = mainActivity;
+        _viewer         = viewer;
+        //viewerにこのクラスを登録する
+//        _viewer.registerViewPage(LayoutDefine.EDITOR, this);
+//        mainActivity.setContentView( R.layout.edit_view );
+//        _editView = mainActivity.findViewById( R.id.body_text);
         
-        _viewer   = viewer;
     }
     
-    @Override
-    public void onClick(View view){
-        _selectedDocument.setText( _editView.getText().toString() );
-    }
+//    @Override
+//    public void onClick(View view){
+//        System.out.println( "edit page button on click ");
+//    }
     
     @Override
     public void showContent(){
-        _selectedDocument = _viewer.getSelectedContent();
-        _editView.setText( _selectedDocument.getText() );
+        _layoutSwitcher.changeContentView( R.layout.edit_view );
+        TextView titleText
+                = _layoutSwitcher.getViewFromCurrentLayout( R.id.title_text );
+        TextView bodyText 
+                = _layoutSwitcher.getViewFromCurrentLayout( R.id.body_text );
+        Document selectedDocument = _viewer.getSelectedContent();
+        titleText.setText( selectedDocument.getTitle() );
+        bodyText.setText( selectedDocument.getText() );
+    }
+    
+    @Override
+    public void updateContent(){
+        TextView titleText
+                = _layoutSwitcher.getViewFromCurrentLayout( R.id.title_text );
+        TextView bodyText
+                = _layoutSwitcher.getViewFromCurrentLayout( R.id.body_text );
+        Document selectedDocument = _viewer.getSelectedContent();
+        selectedDocument.updateTitle( titleText.getText().toString() );
+        selectedDocument.updateText( bodyText.getText().toString() );
     }
     
 }

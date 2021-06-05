@@ -1,12 +1,13 @@
 package com.honestastrology.realmexample;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Document extends RealmObject {
     
     public static final String PRIMARY_KEY    = "_id";
-    public static final String EMPTY_STRING   = "TEST";
+    public static final String EMPTY_STRING   = "";
     public static final int    INIT_ID        = 0;
     public static final int    NEXT_ID_STRIDE = 1;
     
@@ -42,12 +43,17 @@ public class Document extends RealmObject {
         return _text;
     }
     
-    public void setTitle(String title) {
-        this._title = title;
+    public void updateTitle(String title) {
+        getRealm().executeTransaction(
+                realmTransaction -> this._title = title
+        );
+        
     }
     
-    public void setText(String text){
-        this._text = text;
+    public void updateText(String text){
+        getRealm().executeTransaction(
+                realmTransaction -> this._text = text
+        );
     }
     
 }

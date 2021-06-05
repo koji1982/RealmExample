@@ -1,4 +1,4 @@
-package com.honestastrology.realmexample.ui.layout;
+package com.honestastrology.realmexample.ui.view;
 
 import io.realm.RealmObject;
 

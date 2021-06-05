@@ -1,10 +1,10 @@
 package com.honestastrology.realmexample;
 
-import com.honestastrology.realmexample.ui.layout.LayoutType;
+import com.honestastrology.realmexample.ui.view.LayoutType;
 
-enum DisplayLayout implements LayoutType<Document> {
+enum LayoutDefine implements LayoutType<Document> {
     
-    TITLE_LIST(R.layout.activity_main),
+    TITLE_LIST(R.layout.entry_title_list),
     EDITOR(R.layout.edit_view);
     
     @Override
@@ -14,7 +14,7 @@ enum DisplayLayout implements LayoutType<Document> {
     
     private final int _resourceId;
     
-    DisplayLayout(int resourceId){
+    LayoutDefine(int resourceId){
         _resourceId = resourceId;
     }
 }

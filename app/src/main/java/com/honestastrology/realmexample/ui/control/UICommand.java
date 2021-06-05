@@ -1,7 +1,7 @@
 package com.honestastrology.realmexample.ui.control;
 
-import com.honestastrology.realmexample.dbaccess.DBOperator;
-import com.honestastrology.realmexample.ui.layout.Viewer;
+import com.honestastrology.realmexample.database.DBOperator;
+import com.honestastrology.realmexample.ui.view.Viewer;
 
 import io.realm.RealmObject;
 

@@ -4,5 +4,7 @@
     android:id="@+id/document_title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:hint="@string/no_title"
     android:textSize="@dimen/title_size"
-    android:layout_marginVertical="@dimen/list_title_margin"/>
+    android:textColor="@color/dark_gray"
+    android:paddingVertical="@dimen/list_title_padding"/>

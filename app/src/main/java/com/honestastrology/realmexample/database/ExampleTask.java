@@ -1,4 +1,4 @@
-package com.honestastrology.realmexample.dbaccess;
+package com.honestastrology.realmexample.database;
 
 import com.honestastrology.realmexample.Document;
 

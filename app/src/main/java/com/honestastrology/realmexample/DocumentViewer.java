@@ -1,10 +1,9 @@
 package com.honestastrology.realmexample;
 
-import android.app.Activity;
-
-import com.honestastrology.realmexample.ui.layout.LayoutType;
-import com.honestastrology.realmexample.ui.layout.Viewer;
-import com.honestastrology.realmexample.ui.layout.ViewPage;
+import com.honestastrology.realmexample.database.ConnectType;
+import com.honestastrology.realmexample.ui.view.LayoutType;
+import com.honestastrology.realmexample.ui.view.Viewer;
+import com.honestastrology.realmexample.ui.view.ViewPage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,27 +11,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-class DocumentViewer implements Viewer<Document> {
+/**
+ * 
+ * */
+class DocumentViewer implements Viewer<Document>{
     
-    private final Activity _activity;
-    private final Map<LayoutType<Document>, ViewPage<Document>> _layoutMap;
+    private Map<LayoutType<Document>, ViewPage<Document>> _layoutMap;
+    private List<Document>       _documentList;
+    private LayoutType<Document> _currentLayoutType;
+    private Document             _currentSelectedDocument;
     
-    private List<Document>  _documentList;
-    private Document        _currentSelectedDocument;
+    private String _connectSwitchButtonString;
     
-    DocumentViewer(Activity mainActivity){
-        //レイアウト切り替えをコントロールするため
-        //このクラスでActivity参照を保持する
-        _activity  = mainActivity;
-        //ViewPageを生成する
-        ViewPage<Document> titleListPage = new TitleListPage( mainActivity, this );
-        ViewPage<Document> editPage      = new EditPage( mainActivity, this );
-        //ViewPageはMap内で保持し、使用時はDisplayTypeを指定して取り出す
-        _layoutMap = new HashMap<>();
-        _layoutMap.put( DisplayLayout.TITLE_LIST, titleListPage );
-        _layoutMap.put( DisplayLayout.EDITOR,     editPage      );
+    DocumentViewer(MainActivity mainActivity){
         //RealmObjectを保持するListを初期化
         _documentList = new ArrayList<>();
+        //ViewPageを生成してMapに登録する。
+        //使用時はLayoutTypeを指定して取り出す
+        _layoutMap = new HashMap<>();
+        _layoutMap.put(LayoutDefine.TITLE_LIST, new TitleListPage( mainActivity, this ) );
+        _layoutMap.put(LayoutDefine.EDITOR,     new EditPage( mainActivity, this )      );
+    }
+    
+    @Override
+    public void registerViewPage(LayoutType<Document> layoutType,
+                                 ViewPage<Document>   viewPage   ){
+        _layoutMap.put( layoutType, viewPage );
     }
     
     @Override
@@ -41,9 +45,9 @@ class DocumentViewer implements Viewer<Document> {
             System.out.println( "page transit ERROR. Type-Page Map is NOT contains key.");
             return;
         }
-    
-        _activity.setContentView( nextLayoutType.getResource() );
+        
         ViewPage<Document> nextPage = _layoutMap.get( nextLayoutType );
+        _currentLayoutType = nextLayoutType;
         nextPage.showContent();
     }
     
@@ -69,6 +73,18 @@ class DocumentViewer implements Viewer<Document> {
     @Override
     public Document getSelectedContent(){
         return _currentSelectedDocument;
+    }
+    
+    @Override
+    public void onSwitchConnect(ConnectType connectType){
+        _connectSwitchButtonString = connectType.getDisplayString();
+    }
+    
+    @Override
+    public void update(){
+        ViewPage<Document> currentViewPage
+                = _layoutMap.get(_currentLayoutType);
+        currentViewPage.updateContent();
     }
     
 }
