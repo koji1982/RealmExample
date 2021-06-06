@@ -10,18 +10,16 @@ import io.realm.RealmObject;
 
 public interface DBAccessor {
     
-    public static DBAccessor createAsync(LayoutSwitcher entryViewCallback,
-                                         String         asyncFileName){
-        return new AsyncAccessor( entryViewCallback, asyncFileName );
+    public static DBAccessor createAsync(String asyncFileName){
+        return new AsyncAccessor( asyncFileName );
     }
     
-    public static DBAccessor createSync(Context        context,
-                                        LayoutSwitcher entryViewCallback,
-                                        String         syncId){
-        return new SyncAccessor( context, entryViewCallback, syncId );
+    public static DBAccessor createSync(String          syncId,
+                                        DBErrorCallback errorCallback){
+        return new SyncAccessor( syncId, errorCallback );
     }
     
-    public boolean isValid();
+    public boolean isNull();
     
     public ConnectType getConnectType();
     

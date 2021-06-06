@@ -12,19 +12,17 @@ class AsyncAccessor implements DBAccessor {
 //    private static final String ASYNC_FILE_NAME = "realm_example_async";
     private Realm _asyncRealm;
     
-    AsyncAccessor(LayoutSwitcher entryViewCallback,
-                  String         asyncFileName){
+    AsyncAccessor(String asyncFileName){
         RealmConfiguration config = new RealmConfiguration.Builder()
                                             .name( asyncFileName )
                                             .allowQueriesOnUiThread(true)
                                             .allowWritesOnUiThread(true)
                                             .build();
         _asyncRealm = Realm.getInstance( config );
-//        entryViewCallback.showEntryView();
     }
     
     @Override
-    public boolean isValid(){
+    public boolean isNull(){
         return ( _asyncRealm == null );
     }
     
@@ -49,12 +47,12 @@ class AsyncAccessor implements DBAccessor {
     public <E extends RealmObject> E getRealmObject(Class<E> clazz,
                                                     String   fieldName,
                                                     int      id){
-        return _asyncRealm.where( clazz ).equalTo( fieldName, id ).findFirstAsync();
+        return _asyncRealm.where( clazz ).equalTo( fieldName, id ).findFirst();
     }
     
     @Override
     public <E extends RealmObject> Iterator<E> readAll(Class<E> clazz){
-        return _asyncRealm.where( clazz ).findAllAsync().iterator();
+        return _asyncRealm.where( clazz ).findAll().iterator();
     }
     
     @Override

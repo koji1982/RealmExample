@@ -12,8 +12,6 @@ import io.realm.RealmObject;
  * */
 public interface Viewer<E extends RealmObject> {
     
-    public void registerViewPage(LayoutType<E> layoutType, ViewPage<E> viewPage);
-    
     public void transitViewPage(LayoutType<E> layoutType);
     
     public void setContents(Iterator<E> contents);
@@ -23,9 +21,11 @@ public interface Viewer<E extends RealmObject> {
     public void setSelectedContent(E selectedContent);
     
     public E getSelectedContent();
-    //DB接続切り替え時のViewer側の処理
-    public void onSwitchConnect(ConnectType ConnectType);
+    /** DB接続切り替え時のViewer側の処理 */
+    public void updateConnectDisplay(ConnectType ConnectType);
     
     public void update();
+    
+    public LayoutType<E> getCurrentPageType();
     
 }

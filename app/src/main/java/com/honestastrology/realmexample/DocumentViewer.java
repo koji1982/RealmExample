@@ -1,6 +1,7 @@
 package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.database.ConnectType;
+import com.honestastrology.realmexample.ui.view.DisplayTextChanger;
 import com.honestastrology.realmexample.ui.view.LayoutType;
 import com.honestastrology.realmexample.ui.view.Viewer;
 import com.honestastrology.realmexample.ui.view.ViewPage;
@@ -20,8 +21,7 @@ class DocumentViewer implements Viewer<Document>{
     private List<Document>       _documentList;
     private LayoutType<Document> _currentLayoutType;
     private Document             _currentSelectedDocument;
-    
-    private String _connectSwitchButtonString;
+    private DisplayTextChanger   _displayTextChanger;
     
     DocumentViewer(MainActivity mainActivity){
         //RealmObjectを保持するListを初期化
@@ -31,18 +31,14 @@ class DocumentViewer implements Viewer<Document>{
         _layoutMap = new HashMap<>();
         _layoutMap.put(LayoutDefine.TITLE_LIST, new TitleListPage( mainActivity, this ) );
         _layoutMap.put(LayoutDefine.EDITOR,     new EditPage( mainActivity, this )      );
-    }
-    
-    @Override
-    public void registerViewPage(LayoutType<Document> layoutType,
-                                 ViewPage<Document>   viewPage   ){
-        _layoutMap.put( layoutType, viewPage );
+        //タイトル文字列等、画面表示を変更する場合のコールバック
+        _displayTextChanger = mainActivity;
     }
     
     @Override
     public void transitViewPage(LayoutType<Document> nextLayoutType){
         if( !_layoutMap.containsKey( nextLayoutType ) ){
-            System.out.println( "page transit ERROR. Type-Page Map is NOT contains key.");
+            System.out.println( "page transit ERROR. Type-Page Map is not contains key.");
             return;
         }
         
@@ -76,8 +72,9 @@ class DocumentViewer implements Viewer<Document>{
     }
     
     @Override
-    public void onSwitchConnect(ConnectType connectType){
-        _connectSwitchButtonString = connectType.getDisplayString();
+    public void updateConnectDisplay(ConnectType connectType){
+        _displayTextChanger.changeTitle( connectType.getName() );
+        _displayTextChanger.changeSwitcher( connectType.getTargetName() );
     }
     
     @Override
@@ -85,6 +82,11 @@ class DocumentViewer implements Viewer<Document>{
         ViewPage<Document> currentViewPage
                 = _layoutMap.get(_currentLayoutType);
         currentViewPage.updateContent();
+    }
+    
+    @Override
+    public LayoutType<Document> getCurrentPageType(){
+        return _currentLayoutType;
     }
     
 }

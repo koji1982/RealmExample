@@ -10,6 +10,11 @@ import io.realm.RealmObject;
  * */
 public interface LayoutType<E extends RealmObject> {
     
-    public int getResource();
+    public static final boolean IS_ENTRY_PAGE     = true;
+    public static final boolean IS_NOT_ENTRY_PAGE = false;
+    
+    public boolean isEntryPage();
+    
+    public LayoutType<E> getPrevPageType();
     
 }

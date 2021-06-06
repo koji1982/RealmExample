@@ -12,20 +12,9 @@ class EditPage implements ViewPage<Document> {
     private final LayoutSwitcher   _layoutSwitcher;
     
     EditPage(MainActivity mainActivity, Viewer<Document> viewer){
-        
         _layoutSwitcher = mainActivity;
         _viewer         = viewer;
-        //viewerにこのクラスを登録する
-//        _viewer.registerViewPage(LayoutDefine.EDITOR, this);
-//        mainActivity.setContentView( R.layout.edit_view );
-//        _editView = mainActivity.findViewById( R.id.body_text);
-        
     }
-    
-//    @Override
-//    public void onClick(View view){
-//        System.out.println( "edit page button on click ");
-//    }
     
     @Override
     public void showContent(){

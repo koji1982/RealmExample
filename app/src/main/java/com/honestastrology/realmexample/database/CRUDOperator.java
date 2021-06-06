@@ -1,8 +1,7 @@
 package com.honestastrology.realmexample.database;
 
 import android.content.Context;
-
-import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
+import android.util.Log;
 
 import java.util.Iterator;
 
@@ -16,24 +15,28 @@ import io.realm.mongodb.sync.SyncConfiguration;
 
 class CRUDOperator implements DBOperator, ConnectionCallback {
     
+    private static final String SYNC_ERROR_MESSAGE  = "SYNC DB is not available.";
+    private static final String ASYNC_ERROR_MESSAGE = "ASYNC DB is not available.";
+    
     private DBAccessor        _asyncDB;
     private DBAccessor        _syncDB;
     private SyncConfiguration _connectedConfig;
     
-    private DBAccessor _currentDBAccessor;
+    private DBAccessor        _currentDBAccessor;
+    private DBErrorCallback   _errorCallback;
     
-    CRUDOperator(Context        context,
-                 LayoutSwitcher entryViewCallback,
-                 String         asyncFileName,
-                 String         syncId              ){
+    CRUDOperator(Context         context,
+                 String          asyncFileName,
+                 String          syncId,
+                 DBErrorCallback errorCallback ){
         
         Realm.init( context );
-        _asyncDB   = DBAccessor.createAsync( entryViewCallback, asyncFileName );
-        _syncDB    = DBAccessor.createSync( context,
-                                            entryViewCallback,
-                                            syncId );
+        _asyncDB   = DBAccessor.createAsync( asyncFileName );
+        _syncDB    = DBAccessor.createSync( syncId, errorCallback );
         
-        _currentDBAccessor = _syncDB;
+        _errorCallback     = errorCallback;
+        _currentDBAccessor = _syncDB.isNull() ?
+                                           _asyncDB : _syncDB;
     }
     
     @Override
@@ -43,7 +46,7 @@ class CRUDOperator implements DBOperator, ConnectionCallback {
     
     @Override
     public boolean isNull(){
-        return _currentDBAccessor.isValid();
+        return _currentDBAccessor.isNull();
     }
     
     @Override
@@ -53,11 +56,19 @@ class CRUDOperator implements DBOperator, ConnectionCallback {
     
     @Override
     public void toSync(){
+        if( _syncDB.isNull() ){
+            _errorCallback.onError( SYNC_ERROR_MESSAGE );
+            return;
+        }
         _currentDBAccessor = _syncDB;
     }
     
     @Override
     public void toAsync(){
+        if( _asyncDB.isNull() ){
+            _errorCallback.onError( ASYNC_ERROR_MESSAGE );
+            return;
+        }
         _currentDBAccessor = _asyncDB;
     }
     

@@ -11,10 +11,10 @@ import io.realm.RealmObject;
 public interface DBOperator {
     
     public static DBOperator createSimpleOperator(Context context,
-                                                  LayoutSwitcher entryViewCallback,
                                                   String  asyncFileName,
-                                                  String  syncId){
-        return new CRUDOperator(context, entryViewCallback, asyncFileName, syncId);
+                                                  String  syncId,
+                                                  DBErrorCallback errorCallback){
+        return new CRUDOperator(context, asyncFileName, syncId, errorCallback);
     }
     
     public boolean isNull();

@@ -15,7 +15,6 @@ public enum DocumentCommand implements UICommand<Document> {
         /**
          * Documentを新しく作成し、編集画面に切り替える
          * 編集する際にRealmObjectとして登録されていなければならないため
-         * 
          * */
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
@@ -28,6 +27,10 @@ public enum DocumentCommand implements UICommand<Document> {
             dbOperator.create( newDocument );
             Document createdDocument = dbOperator.getRealmObject(
                             Document.class, Document.PRIMARY_KEY, newId);
+            boolean isLoaded = createdDocument.isLoaded();
+            boolean isManaged = createdDocument.isManaged();
+            boolean isValid   = createdDocument.isValid();
+            
             viewer.setSelectedContent( createdDocument );
             viewer.transitViewPage( LayoutDefine.EDITOR );
         }
@@ -39,6 +42,7 @@ public enum DocumentCommand implements UICommand<Document> {
                 viewer.setContents( dbOperator.readAll(Document.class) );
             }
             viewer.transitViewPage( LayoutDefine.TITLE_LIST );
+            viewer.updateConnectDisplay( dbOperator.getCurrentConnect() );
         }
     },
     UPDATE    ( R.id.update_button ){
@@ -51,13 +55,15 @@ public enum DocumentCommand implements UICommand<Document> {
             dbOperator.update( viewer.getSelectedContent() );
         }
     },
-    DELETE    ( R.id.delete_button ){
+    DELETE    ( R.id.list_item ){
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
             
             if( dbOperator.isNull() ) return;
             
             dbOperator.delete( viewer.getSelectedContent() );
+            
+            READ.execute( viewer, dbOperator );
         }
     },
     SWITCH_CONNECT( R.id.sync_async_button ){
@@ -65,21 +71,14 @@ public enum DocumentCommand implements UICommand<Document> {
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
             ConnectType connectType = dbOperator.getCurrentConnect();
             connectType.switches( dbOperator );
-            ConnectType newConnectType = dbOperator.getCurrentConnect();
-            viewer.onSwitchConnect( newConnectType );
-        }
-    },
-    TEXT_LIST ( R.id.document_title ){
-        @Override
-        public void execute(Viewer<Document> viewer, DBOperator dbOperator){
-            System.out.println("   TEXT_LIST   " 
-                       + String.valueOf(viewer.getSelectedContent().getId()));
+            
+            READ.execute( viewer, dbOperator );
         }
     },
     BACK_FROM_EDIT( R.id.back_from_edit ){
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
-            viewer.transitViewPage( LayoutDefine.TITLE_LIST );
+            READ.execute( viewer, dbOperator );
         }
     };
     

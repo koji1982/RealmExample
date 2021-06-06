@@ -8,8 +8,9 @@
     <string name="new_button">New</string>
     <string name="save_button">Save</string>
     <string name="load_button">Reload</string>
-    <string name="sync_async">SYNC/ASYNC</string>
-    <string name="delete_button">Delete</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_ask">Delete OK ?</string>
     <string name="to_sync">to Sync</string>
     <string name="to_async">to Async</string>
     <string name="back_button">Back</string>

@@ -12,25 +12,20 @@ class TitleListPage implements ViewPage<Document> {
     
     private final Viewer<Document> _viewer;
     private final LayoutSwitcher   _layoutSwitcher;
-//    private AdapterView<ArrayAdapter<Document>> _listView;
+    private final DeleteDialog     _deleteDialog;
     
     private ArrayAdapter<Document> _innerListAdapter;
     
     
-    TitleListPage(MainActivity         mainActivity,
+    TitleListPage(MainActivity     mainActivity,
                   Viewer<Document> viewer       ){
         _layoutSwitcher = mainActivity;
-//        mainActivity.setContentView( R.layout.activity_main );
-//        
-//        _listView = mainActivity.findViewById( R.id.document_title_list );
-//        _listView.setOnItemClickListener( new ListClickListener() );
-//        _listView.setAdapter(arrayAdapter);
         //ArrayAdapterはレイアウトファイルから取得できないため、
         //ここで生成したものを保持しておく
         _innerListAdapter = new ArrayAdapter<>( mainActivity, R.layout.list_inner_text );
         //内容(RealmObject)の変更、ViewPageの遷移はViewerを通じて行う
-        _viewer     = viewer;
-//        _viewer.registerViewPage(LayoutDefine.TITLE_LIST, this);
+        _viewer       = viewer;
+        _deleteDialog = new DeleteDialog( mainActivity );
     }
     
     @Override
@@ -44,11 +39,10 @@ class TitleListPage implements ViewPage<Document> {
                 = _layoutSwitcher.getViewFromCurrentLayout( R.id.document_title_list );
         titleListView.setAdapter( _innerListAdapter );
         titleListView.setOnItemClickListener( new ListClickListener() );
+        titleListView.setOnItemLongClickListener( new LongClickListener() );
     }
     
-    /**
-     * TitleListPageではDocumentの変更・更新を行わない
-     * */
+    //TitleListPageではDocumentの変更・更新を行わない
     @Override
     public void updateContent(){
         
@@ -67,4 +61,16 @@ class TitleListPage implements ViewPage<Document> {
         }
     }
     
+    private class LongClickListener implements AdapterView.OnItemLongClickListener {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView,
+                                       View           view,
+                                       int            position,
+                                       long           id) {
+            Document selectedDocument = (Document)adapterView.getItemAtPosition(position);
+            _viewer.setSelectedContent( selectedDocument );
+            _deleteDialog.show(view);
+            return true;
+        }
+    }
 }

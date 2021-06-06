@@ -1,26 +1,34 @@
 package com.honestastrology.realmexample.database;
 
 public enum RealmConnectType implements ConnectType {
-    SYNC("to Async"){
+    SYNC("Sync", "to Async"){
         @Override
         public void switches(DBOperator operator){
             operator.toAsync();
         }
     },
-    ASYNC("to Sync"){
+    ASYNC("Async", "to Sync"){
         @Override
         public void switches(DBOperator operator){
             operator.toSync();
         }
     };
     
-    public String getDisplayString(){
-        return _displayString;
+    @Override
+    public String getName(){
+        return _name;
     }
     
-    private final String _displayString;
+    @Override
+    public String getTargetName(){
+        return _targetName;
+    }
     
-    RealmConnectType(String displayString){
-        this._displayString = displayString;
+    private final String _name;
+    private final String _targetName;
+    
+    RealmConnectType(String name, String displayString){
+        _name       = name;
+        _targetName = displayString;
     }
 }

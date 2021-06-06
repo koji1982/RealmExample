@@ -4,17 +4,28 @@ import com.honestastrology.realmexample.ui.view.LayoutType;
 
 enum LayoutDefine implements LayoutType<Document> {
     
-    TITLE_LIST(R.layout.entry_title_list),
-    EDITOR(R.layout.edit_view);
+    TITLE_LIST( IS_ENTRY_PAGE     ),
+    EDITOR    ( IS_NOT_ENTRY_PAGE );
     
     @Override
-    public int getResource(){
-        return _resourceId;
+    public boolean isEntryPage(){
+        return _isEntryPage;
     }
     
-    private final int _resourceId;
+    @Override
+    public LayoutType<Document> getPrevPageType(){
+        return _prevPageType;
+    }
     
-    LayoutDefine(int resourceId){
-        _resourceId = resourceId;
+    private final boolean        _isEntryPage;
+    private LayoutType<Document> _prevPageType;
+    
+    LayoutDefine(boolean isEntryPage){
+        _isEntryPage = isEntryPage;
+    }
+    
+    static{
+        TITLE_LIST._prevPageType = TITLE_LIST;
+        EDITOR    ._prevPageType = TITLE_LIST;
     }
 }
