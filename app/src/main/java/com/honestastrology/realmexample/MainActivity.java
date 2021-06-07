@@ -12,7 +12,7 @@ import com.honestastrology.realmexample.ui.view.LayoutType;
 import com.honestastrology.realmexample.ui.view.Viewer;
 import com.honestastrology.realmexample.database.DBOperator;
 import com.honestastrology.realmexample.ui.control.Selector;
-import com.honestastrology.realmexample.ui.control.UICommand;
+import com.honestastrology.realmexample.ui.control.Command;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     // ここに処理を記述する
     @Override
     public void onClick(View view){
-        UICommand<Document> clickedCommand 
+        Command<Document> clickedCommand 
                 = _buttonSelector.selectCommand( view.getId() );
         clickedCommand.execute( _viewer, _dbOperator);
     }

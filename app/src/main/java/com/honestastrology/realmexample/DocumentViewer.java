@@ -73,7 +73,7 @@ class DocumentViewer implements Viewer<Document>{
     
     @Override
     public void updateConnectDisplay(ConnectType connectType){
-        _displayTextChanger.changeTitle( connectType.getName() );
+        _displayTextChanger.changeTitle( connectType.getDisplayName() );
         _displayTextChanger.changeSwitcher( connectType.getTargetName() );
     }
     

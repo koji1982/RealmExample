@@ -5,7 +5,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="async_file_name">realm_example_async</string>
     <string name="sync_id">realmexample-puwav</string>
-    <string name="new_button">New</string>
+    <string name="new_button">New Note</string>
     <string name="save_button">Save</string>
     <string name="load_button">Reload</string>
     <string name="delete">Delete</string>

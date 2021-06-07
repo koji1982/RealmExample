@@ -13,7 +13,7 @@ import io.realm.mongodb.sync.SyncConfiguration;
  *
  * */
 
-class CRUDOperator implements DBOperator, ConnectionCallback {
+class CRUDOperator implements DBOperator {
     
     private static final String SYNC_ERROR_MESSAGE  = "SYNC DB is not available.";
     private static final String ASYNC_ERROR_MESSAGE = "ASYNC DB is not available.";
@@ -37,11 +37,6 @@ class CRUDOperator implements DBOperator, ConnectionCallback {
         _errorCallback     = errorCallback;
         _currentDBAccessor = _syncDB.isNull() ?
                                            _asyncDB : _syncDB;
-    }
-    
-    @Override
-    public void setConnectedConfig(SyncConfiguration config){
-        this._connectedConfig = config;
     }
     
     @Override

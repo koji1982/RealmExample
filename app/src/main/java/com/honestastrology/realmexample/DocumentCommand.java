@@ -1,7 +1,7 @@
 package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.database.ConnectType;
-import com.honestastrology.realmexample.ui.control.UICommand;
+import com.honestastrology.realmexample.ui.control.Command;
 import com.honestastrology.realmexample.database.DBOperator;
 import com.honestastrology.realmexample.ui.view.Viewer;
 
@@ -9,13 +9,13 @@ import com.honestastrology.realmexample.ui.view.Viewer;
  * 
  */
 
-public enum DocumentCommand implements UICommand<Document> {
-    
+public enum DocumentCommand implements Command<Document> {
+    /**
+     * Documentを新しく作成し、編集画面に切り替える
+     * 編集する際にRealmObjectとして登録されていなければならないため
+     * 画面を切り替える前に、生成したDocumentをデータベースに渡している
+     * */
     CREATE    ( R.id.create_button ) {
-        /**
-         * Documentを新しく作成し、編集画面に切り替える
-         * 編集する際にRealmObjectとして登録されていなければならないため
-         * */
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
             
@@ -27,15 +27,15 @@ public enum DocumentCommand implements UICommand<Document> {
             dbOperator.create( newDocument );
             Document createdDocument = dbOperator.getRealmObject(
                             Document.class, Document.PRIMARY_KEY, newId);
-            boolean isLoaded = createdDocument.isLoaded();
-            boolean isManaged = createdDocument.isManaged();
-            boolean isValid   = createdDocument.isValid();
             
             viewer.setSelectedContent( createdDocument );
             viewer.transitViewPage( LayoutDefine.EDITOR );
         }
     },
-    READ      ( R.id.reload_button ) {
+    /**
+     * データベースから全てのDocumentを取得し表示するコマンド
+     * */
+    READ      ( R.integer.reload_operation ) {
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
             if( !dbOperator.isNull() ) {

@@ -2,7 +2,7 @@ package com.honestastrology.realmexample.database;
 
 public interface ConnectType {
     
-    public String getName();
+    public String getDisplayName();
     
     public String getTargetName();
     

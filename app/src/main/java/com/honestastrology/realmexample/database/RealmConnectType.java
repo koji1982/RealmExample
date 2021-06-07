@@ -1,13 +1,13 @@
 package com.honestastrology.realmexample.database;
 
 public enum RealmConnectType implements ConnectType {
-    SYNC("Sync", "to Async"){
+    SYNC("Sync File", "to Async"){
         @Override
         public void switches(DBOperator operator){
             operator.toAsync();
         }
     },
-    ASYNC("Async", "to Sync"){
+    ASYNC("Async File", "to Sync"){
         @Override
         public void switches(DBOperator operator){
             operator.toSync();
@@ -15,8 +15,8 @@ public enum RealmConnectType implements ConnectType {
     };
     
     @Override
-    public String getName(){
-        return _name;
+    public String getDisplayName(){
+        return _displayName;
     }
     
     @Override
@@ -24,11 +24,11 @@ public enum RealmConnectType implements ConnectType {
         return _targetName;
     }
     
-    private final String _name;
+    private final String _displayName;
     private final String _targetName;
     
     RealmConnectType(String name, String displayString){
-        _name       = name;
+        _displayName = name;
         _targetName = displayString;
     }
 }
