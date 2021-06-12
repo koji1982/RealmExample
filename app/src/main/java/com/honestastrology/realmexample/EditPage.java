@@ -2,6 +2,8 @@ package com.honestastrology.realmexample;
 
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
 import com.honestastrology.realmexample.ui.view.Viewer;
 import com.honestastrology.realmexample.ui.view.ViewPage;
@@ -11,7 +13,8 @@ class EditPage implements ViewPage<Document> {
     private final Viewer<Document> _viewer;
     private final LayoutSwitcher   _layoutSwitcher;
     
-    EditPage(MainActivity mainActivity, Viewer<Document> viewer){
+    EditPage(@NonNull MainActivity mainActivity,
+             @NonNull Viewer<Document> viewer  ){
         _layoutSwitcher = mainActivity;
         _viewer         = viewer;
     }
@@ -32,11 +35,16 @@ class EditPage implements ViewPage<Document> {
     public void updateContent(){
         TextView titleText
                 = _layoutSwitcher.getViewFromCurrentLayout( R.id.title_text );
+        testNull( titleText );
         TextView bodyText
                 = _layoutSwitcher.getViewFromCurrentLayout( R.id.body_text );
         Document selectedDocument = _viewer.getSelectedContent();
         selectedDocument.updateTitle( titleText.getText().toString() );
         selectedDocument.updateText( bodyText.getText().toString() );
+    }
+    
+    private void testNull(@NonNull TextView testText){
+        System.out.println( testText.toString() );
     }
     
 }

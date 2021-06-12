@@ -16,6 +16,17 @@ import com.honestastrology.realmexample.ui.control.Command;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * 起動時に呼ばれるクラス
+ * DBOperator, Viewer, Controller(CommandSelector)を保持する。
+ * OSからタッチイベントを受け取り、操作コマンドに変換して実行することで
+ * DBOperator, Viewerを操作する。
+ * 
+ * Androidの仕様上、タッチイベント取得の他、
+ * レイアウトの変更、テキスト表示、エラーメッセージ表示の機能等、
+ * OS側が提供する機能の多くをActivityから行うことになっている為、
+ * それらのコールバックインターフェースを実装している。
+ * */
 public class MainActivity extends AppCompatActivity
                           implements View.OnClickListener,
                                              LayoutSwitcher,

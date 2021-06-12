@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
+
 import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
 import com.honestastrology.realmexample.ui.view.Viewer;
 import com.honestastrology.realmexample.ui.view.ViewPage;
@@ -14,13 +16,13 @@ class TitleListPage implements ViewPage<Document> {
     private final LayoutSwitcher   _layoutSwitcher;
     private final DeleteDialog     _deleteDialog;
     
-    private ArrayAdapter<Document> _innerListAdapter;
+    private final ArrayAdapter<Document> _innerListAdapter;
     
     
-    TitleListPage(MainActivity     mainActivity,
-                  Viewer<Document> viewer       ){
+    TitleListPage(@NonNull MainActivity     mainActivity,
+                  @NonNull Viewer<Document> viewer       ){
         _layoutSwitcher = mainActivity;
-        //ArrayAdapterはレイアウトファイルから取得できないため、
+        //ArrayAdapterはxmlレイアウトファイルから取得できないため、
         //ここで生成したものを保持しておく
         _innerListAdapter = new ArrayAdapter<>( mainActivity, R.layout.list_inner_text );
         //内容(RealmObject)の変更、ViewPageの遷移はViewerを通じて行う

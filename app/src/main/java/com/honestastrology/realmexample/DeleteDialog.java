@@ -16,7 +16,7 @@ class DeleteDialog {
         _decisionDialog   = new AlertDialog.Builder(mainActivity)
                                   .setMessage( R.string.delete_ask )
                                   .setPositiveButton( R.string.delete, new DeleteButton())
-                                  .setNegativeButton( R.string.cancel, (dialog, i)->{ dialog.dismiss(); })
+                                  .setNegativeButton( R.string.cancel, new CancelButton())
                                   .create();
         
     }
