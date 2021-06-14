@@ -42,7 +42,10 @@ public enum DocumentCommand implements Command<Document> {
                 viewer.setContents( dbOperator.readAll(Document.class) );
             }
             viewer.transitViewPage( LayoutDefine.TITLE_LIST );
-            viewer.updateConnectDisplay( dbOperator.getCurrentConnect() );
+            viewer.updateConnectString( dbOperator.getCurrentConnect() );
+            
+//            if( dbOperator.isNull() ) return;
+//            viewer.display( dbOperator.readAll(Document.class) );
         }
     },
     UPDATE    ( R.id.update_button ){
@@ -51,8 +54,7 @@ public enum DocumentCommand implements Command<Document> {
             
             if( dbOperator.isNull() ) return;
             
-            viewer.update();
-            dbOperator.update( viewer.getSelectedContent() );
+            dbOperator.update( viewer.confirmUpdate() );
         }
     },
     DELETE    ( R.id.list_item ){

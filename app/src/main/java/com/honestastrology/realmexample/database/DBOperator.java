@@ -2,19 +2,21 @@ package com.honestastrology.realmexample.database;
 
 import android.content.Context;
 
-import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
-
 import java.util.Iterator;
 
 import io.realm.RealmObject;
 
 public interface DBOperator {
     
+    public static DBOperator getNullInstance(){
+        return NullDBOperator.getInstance();
+    }
+    
     public static DBOperator createSimpleOperator(Context context,
                                                   String  asyncFileName,
                                                   String  syncId,
                                                   DBErrorCallback errorCallback){
-        return new CRUDOperator(context, asyncFileName, syncId, errorCallback);
+        return new BasicOperator(context, asyncFileName, syncId, errorCallback);
     }
     
     public boolean isNull();

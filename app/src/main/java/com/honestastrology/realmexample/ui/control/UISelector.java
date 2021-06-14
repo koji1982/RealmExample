@@ -16,7 +16,9 @@ class UISelector<T extends RealmObject> implements Selector<T> {
     
     @Override
     public Command<T> selectCommand(int uiId){
-        return _clickSelector.get(uiId);
+        return _clickSelector.containsKey( uiId ) ?
+                                        _clickSelector.get( uiId )
+                                        : Command.getNullInstance();
     }
     
     private final Map<Integer, Command<T>> _clickSelector;

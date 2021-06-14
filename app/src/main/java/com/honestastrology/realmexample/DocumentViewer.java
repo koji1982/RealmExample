@@ -72,16 +72,16 @@ class DocumentViewer implements Viewer<Document>{
     }
     
     @Override
-    public void updateConnectDisplay(ConnectType connectType){
+    public void updateConnectString(ConnectType connectType){
         _displayTextChanger.changeTitle( connectType.getDisplayName() );
         _displayTextChanger.changeSwitcher( connectType.getTargetName() );
     }
     
     @Override
-    public void update(){
-        ViewPage<Document> currentViewPage
-                = _layoutMap.get(_currentLayoutType);
-        currentViewPage.updateContent();
+    public Document confirmUpdate(){
+        //EditPage以外からは更新を行わない
+        if( _currentLayoutType != LayoutDefine.EDITOR ) return; 
+        return currentViewPage.updateContent();
     }
     
     @Override

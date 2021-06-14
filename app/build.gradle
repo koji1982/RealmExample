@@ -27,6 +27,7 @@ android {
     }
     testOptions {
         unitTests.includeAndroidResources = true
+        unitTests.returnDefaultValues = true
     }
 }
 //MongoDBとの同期を使用せずローカルDBのみを使用する場合は、realm{}の記述自体必要ない
@@ -46,18 +47,14 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'org.jmockit:jmockit:1.8'
-//    implementation 'junit:junit:4.+'
-//    implementation "org.jmock:jmock-junit5:2.11.0"
+    testImplementation 'androidx.test:runner:1.3.0'
+    testImplementation 'androidx.test:rules:1.3.0'
     testImplementation 'junit:junit:4.13.2'
-//    testImplementation 'junit:junit:5.3.1'
     testImplementation 'androidx.test:core:1.3.0'
-    testImplementation 'org.jmockit:jmockit:1.8'
-//    testImplementation 'org.junit.jupiter:junit-jupiter'
-//    testImplementation "org.jmock:jmock-junit5:2.11.0"
-//    testImplementation 'org.junit.jupiter:junit-jupiter'
-//    testImplementation 'org.junit.jupiter:junit-jupiter'
-//    testImplementation 'org.junit.jupiter:junit-jupiter'
-//    testImplementation 'org.junit.jupiter:junit-jupiter'
+//    testImplementation 'org.jmockit:jmockit:1.8'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.robolectric:robolectric:4.4'
+    testImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

@@ -22,9 +22,9 @@ public interface Viewer<E extends RealmObject> {
     
     public E getSelectedContent();
     /** DB接続切り替え時のViewer側の処理 */
-    public void updateConnectDisplay(ConnectType ConnectType);
+    public void updateConnectString(ConnectType ConnectType);
     
-    public void update();
+    public E confirmUpdate();
     
     public LayoutType<E> getCurrentPageType();
     

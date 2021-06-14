@@ -13,7 +13,7 @@ import io.realm.mongodb.sync.SyncConfiguration;
  *
  * */
 
-class CRUDOperator implements DBOperator {
+class BasicOperator implements DBOperator {
     
     private static final String SYNC_ERROR_MESSAGE  = "SYNC DB is not available.";
     private static final String ASYNC_ERROR_MESSAGE = "ASYNC DB is not available.";
@@ -25,10 +25,10 @@ class CRUDOperator implements DBOperator {
     private DBAccessor        _currentDBAccessor;
     private DBErrorCallback   _errorCallback;
     
-    CRUDOperator(Context         context,
-                 String          asyncFileName,
-                 String          syncId,
-                 DBErrorCallback errorCallback ){
+    BasicOperator(Context         context,
+                  String          asyncFileName,
+                  String          syncId,
+                  DBErrorCallback errorCallback ){
         
         Realm.init( context );
         _asyncDB   = DBAccessor.createAsync( asyncFileName );

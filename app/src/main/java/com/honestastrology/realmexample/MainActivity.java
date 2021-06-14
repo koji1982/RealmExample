@@ -14,6 +14,7 @@ import com.honestastrology.realmexample.database.DBOperator;
 import com.honestastrology.realmexample.ui.control.Selector;
 import com.honestastrology.realmexample.ui.control.Command;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -42,14 +43,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate( savedInstanceState );
         //MVC各インターフェースを実装したクラスの初期化
         _viewer         = new DocumentViewer( this );
-        _dbOperator     = DBOperator.createSimpleOperator(
-                                                this,
-                                                getString( R.string.async_file_name ),
-                                                getString( R.string.sync_id ),
-                                                this);
+        _dbOperator     = createDBOperator();
         _buttonSelector = Selector.create( DocumentCommand.values() );
+        
+        getParentActivityIntent();
         //データを読込み、起動画面を表示する
         DocumentCommand.READ.execute( _viewer, _dbOperator );
+    }
+    
+    //データベースを使わずにテストする場合の為に、
+    //生成メソッドとして抽出
+    protected DBOperator createDBOperator(){
+        return DBOperator.createSimpleOperator(
+                this,
+                getString( R.string.async_file_name ),
+                getString( R.string.sync_id ),
+                this);
     }
     
     @Override
@@ -110,7 +119,7 @@ public class MainActivity extends AppCompatActivity
     }
     
     @Override
-    public void onError(String message){
+    public void onError(@NonNull String message){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
     

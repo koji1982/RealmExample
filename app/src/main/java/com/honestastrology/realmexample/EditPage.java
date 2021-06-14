@@ -13,7 +13,7 @@ class EditPage implements ViewPage<Document> {
     private final Viewer<Document> _viewer;
     private final LayoutSwitcher   _layoutSwitcher;
     
-    EditPage(@NonNull MainActivity mainActivity,
+    EditPage(@NonNull MainActivity     mainActivity,
              @NonNull Viewer<Document> viewer  ){
         _layoutSwitcher = mainActivity;
         _viewer         = viewer;
@@ -31,11 +31,21 @@ class EditPage implements ViewPage<Document> {
         bodyText.setText( selectedDocument.getText() );
     }
     
+    void showDocument(Document document){
+        _layoutSwitcher.changeContentView( R.layout.edit_view );
+        TextView titleText = _layoutSwitcher.getViewFromCurrentLayout( R.id.title_text );
+        TextView bodyText  = _layoutSwitcher.getViewFromCurrentLayout( R.id.body_text  );
+        
+        if( document == null )return;
+        
+        titleText.setText( document.getTitle() );
+        bodyText.setText( document.getText() );
+    }
+    
     @Override
     public void updateContent(){
         TextView titleText
                 = _layoutSwitcher.getViewFromCurrentLayout( R.id.title_text );
-        testNull( titleText );
         TextView bodyText
                 = _layoutSwitcher.getViewFromCurrentLayout( R.id.body_text );
         Document selectedDocument = _viewer.getSelectedContent();
@@ -43,8 +53,6 @@ class EditPage implements ViewPage<Document> {
         selectedDocument.updateText( bodyText.getText().toString() );
     }
     
-    private void testNull(@NonNull TextView testText){
-        System.out.println( testText.toString() );
-    }
+    void updateDocument()
     
 }

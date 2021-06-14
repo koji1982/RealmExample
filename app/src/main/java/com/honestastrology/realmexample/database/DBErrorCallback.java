@@ -1,7 +1,9 @@
 package com.honestastrology.realmexample.database;
 
+import androidx.annotation.NonNull;
+
 public interface DBErrorCallback {
     
-    public void onError(String message);
+    public void onError(@NonNull String message);
     
 }
