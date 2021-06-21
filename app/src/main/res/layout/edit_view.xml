@@ -65,13 +65,11 @@
             android:id="@+id/update_button"
             android:text="@string/save_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClick"/>
+            android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/back_from_edit"
-            android:text="@string/back_button"
+            android:text="@string/back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClick"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </FrameLayout>

@@ -12,11 +12,17 @@ public interface DBOperator {
         return NullDBOperator.getInstance();
     }
     
-    public static DBOperator createSimpleOperator(Context context,
-                                                  String  asyncFileName,
-                                                  String  syncId,
-                                                  DBErrorCallback errorCallback){
-        return new BasicOperator(context, asyncFileName, syncId, errorCallback);
+    public static DBOperator getInMemoryInstance(Context         context,
+                                                 DBErrorCallback errorCallback){
+        return new BasicOperator(context, errorCallback);
+    }
+    
+    public static DBOperator createBasicOperator(Context         context,
+                                                 String          asyncFileName,
+                                                 String          syncId,
+                                                 DBErrorCallback errorCallback){
+        return new BasicOperator(context,errorCallback);
+//        return new BasicOperator(context, asyncFileName, syncId, errorCallback);
     }
     
     public boolean isNull();

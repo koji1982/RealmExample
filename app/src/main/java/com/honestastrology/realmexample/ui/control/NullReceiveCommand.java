@@ -5,7 +5,7 @@ import com.honestastrology.realmexample.ui.view.Viewer;
 
 import io.realm.RealmObject;
 
-class NullCommand<E extends RealmObject> implements Command<E> {
+class NullReceiveCommand<E extends RealmObject> implements ReceiveCommand<E> {
     
     @Override
     public int getUIId(){

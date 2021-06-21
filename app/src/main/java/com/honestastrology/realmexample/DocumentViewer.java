@@ -2,91 +2,41 @@ package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.database.ConnectType;
 import com.honestastrology.realmexample.ui.view.DisplayTextChanger;
-import com.honestastrology.realmexample.ui.view.LayoutType;
 import com.honestastrology.realmexample.ui.view.Viewer;
-import com.honestastrology.realmexample.ui.view.ViewPage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 
  * */
 class DocumentViewer implements Viewer<Document>{
     
-    private Map<LayoutType<Document>, ViewPage<Document>> _layoutMap;
-    private List<Document>       _documentList;
-    private LayoutType<Document> _currentLayoutType;
-    private Document             _currentSelectedDocument;
-    private DisplayTextChanger   _displayTextChanger;
+    private final TitleListPage      _titleListPage;
+    private final EditPage           _editPage;
+    
+    private final DisplayTextChanger _displayTextChanger;
     
     DocumentViewer(MainActivity mainActivity){
         //RealmObjectを保持するListを初期化
-        _documentList = new ArrayList<>();
-        //ViewPageを生成してMapに登録する。
-        //使用時はLayoutTypeを指定して取り出す
-        _layoutMap = new HashMap<>();
-        _layoutMap.put(LayoutDefine.TITLE_LIST, new TitleListPage( mainActivity, this ) );
-        _layoutMap.put(LayoutDefine.EDITOR,     new EditPage( mainActivity, this )      );
+        _titleListPage = new TitleListPage(mainActivity, this);
+        _editPage      = new EditPage(mainActivity, this);
         //タイトル文字列等、画面表示を変更する場合のコールバック
         _displayTextChanger = mainActivity;
     }
     
     @Override
-    public void transitViewPage(LayoutType<Document> nextLayoutType){
-        if( !_layoutMap.containsKey( nextLayoutType ) ){
-            System.out.println( "page transit ERROR. Type-Page Map is not contains key.");
-            return;
-        }
-        
-        ViewPage<Document> nextPage = _layoutMap.get( nextLayoutType );
-        _currentLayoutType = nextLayoutType;
-        nextPage.showContent();
+    public void show(Iterator<Document> documentIterator){
+        _titleListPage.showDocumentList( documentIterator );
     }
     
     @Override
-    public void setContents(Iterator<Document> iterator){
-        if( iterator == null )return;
-        _documentList.clear();
-        while( iterator.hasNext() ){
-            _documentList.add( iterator.next() );
-        }
+    public void show(Document document){
+        _editPage.showDocument( document );
     }
     
     @Override
-    public List<Document> getContents(){
-        return _documentList;
+    public void setConnectString(ConnectType connectType){
+        _displayTextChanger.setConnectType( connectType.getDisplayName() );
+        _displayTextChanger.setSwitcherText( connectType.getTargetName() );
     }
-    
-    @Override
-    public void setSelectedContent(Document selectedContent){
-        _currentSelectedDocument = selectedContent;
-    }
-    
-    @Override
-    public Document getSelectedContent(){
-        return _currentSelectedDocument;
-    }
-    
-    @Override
-    public void updateConnectString(ConnectType connectType){
-        _displayTextChanger.changeTitle( connectType.getDisplayName() );
-        _displayTextChanger.changeSwitcher( connectType.getTargetName() );
-    }
-    
-    @Override
-    public Document confirmUpdate(){
-        //EditPage以外からは更新を行わない
-        if( _currentLayoutType != LayoutDefine.EDITOR ) return; 
-        return currentViewPage.updateContent();
-    }
-    
-    @Override
-    public LayoutType<Document> getCurrentPageType(){
-        return _currentLayoutType;
-    }
-    
 }

@@ -11,12 +11,12 @@ import io.realm.RealmObject;
  * 返される結果をViewerへ反映させることを想定している
  */
 
-public interface Command<E extends RealmObject> {
+public interface ReceiveCommand<E extends RealmObject> {
     
     public static final int INVALID_UI_ID = -1;
     
-    public static <T extends RealmObject> Command<T> getNullInstance(){
-        return new NullCommand<>();
+    public static <T extends RealmObject> ReceiveCommand<T> getNullInstance(){
+        return new NullReceiveCommand<>();
     }
     
     /** ボタン等のGUIとこのインターフェースの実装コマンドを紐付けるIDを取得するメソッド*/

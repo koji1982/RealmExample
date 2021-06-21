@@ -10,6 +10,10 @@ import io.realm.RealmObject;
 
 public interface DBAccessor {
     
+    public static DBAccessor getNullInstance(){
+        return NullDBAccessor.getInstance();
+    }
+    
     public static DBAccessor createAsync(String asyncFileName){
         return new AsyncAccessor( asyncFileName );
     }

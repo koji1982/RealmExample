@@ -2,34 +2,35 @@ package com.honestastrology.realmexample;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.view.View;
+
+import com.honestastrology.realmexample.ui.control.CommandControl;
 
 class DeleteDialog {
     
-    private final AlertDialog          _decisionDialog;
-    private final View.OnClickListener _operationCommand;
+    private final AlertDialog              _decisionDialog;
+    private final CommandControl<Document> _commandControl;
     
-    private View _deleteTarget;
+    private Document _deleteTarget;
     
     DeleteDialog(MainActivity mainActivity){
-        _operationCommand = mainActivity;
+        _commandControl   = mainActivity;
         _decisionDialog   = new AlertDialog.Builder(mainActivity)
                                   .setMessage( R.string.delete_ask )
                                   .setPositiveButton( R.string.delete, new DeleteButton())
                                   .setNegativeButton( R.string.cancel, new CancelButton())
                                   .create();
-        
     }
     
-    void show(View view){
-        _deleteTarget = view;
+    void showConfirm(Document deleteTarget){
+        _deleteTarget = deleteTarget;
         _decisionDialog.show();
     }
     
     private class DeleteButton implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            _operationCommand.onClick( _deleteTarget );
+            _commandControl.send( DocumentSendCommand.DELETE, _deleteTarget );
+            _commandControl.request( DocumentUICommand.READ );
             _deleteTarget = null;
         }
     }

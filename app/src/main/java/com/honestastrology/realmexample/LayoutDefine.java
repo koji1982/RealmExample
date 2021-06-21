@@ -2,30 +2,26 @@ package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.ui.view.LayoutType;
 
-enum LayoutDefine implements LayoutType<Document> {
+enum LayoutDefine implements LayoutType {
     
-    TITLE_LIST( IS_ENTRY_PAGE     ),
-    EDITOR    ( IS_NOT_ENTRY_PAGE );
+    TITLE_LIST( R.layout.entry_title_list, IS_ENTRY_PAGE     ),
+    EDITOR    ( R.layout.edit_view,        IS_NOT_ENTRY_PAGE );
+    
+    @Override
+    public int getResourceRef(){
+        return _resourceFileRef;
+    }
     
     @Override
     public boolean isEntryPage(){
         return _isEntryPage;
     }
     
-    @Override
-    public LayoutType<Document> getPrevPageType(){
-        return _prevPageType;
-    }
-    
+    private final int            _resourceFileRef;
     private final boolean        _isEntryPage;
-    private LayoutType<Document> _prevPageType;
     
-    LayoutDefine(boolean isEntryPage){
-        _isEntryPage = isEntryPage;
-    }
-    
-    static{
-        TITLE_LIST._prevPageType = TITLE_LIST;
-        EDITOR    ._prevPageType = TITLE_LIST;
+    LayoutDefine(int resourceFileRef, boolean isEntryPage){
+        _resourceFileRef = resourceFileRef;
+        _isEntryPage     = isEntryPage;
     }
 }

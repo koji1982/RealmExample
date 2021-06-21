@@ -1,15 +1,17 @@
 package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.database.ConnectType;
-import com.honestastrology.realmexample.ui.control.Command;
+import com.honestastrology.realmexample.ui.control.ReceiveCommand;
 import com.honestastrology.realmexample.database.DBOperator;
 import com.honestastrology.realmexample.ui.view.Viewer;
+
+import java.util.Iterator;
 
 /**
  * 
  */
 
-public enum DocumentCommand implements Command<Document> {
+public enum DocumentUICommand implements ReceiveCommand<Document> {
     /**
      * Documentを新しく作成し、編集画面に切り替える
      * 編集する際にRealmObjectとして登録されていなければならないため
@@ -25,11 +27,12 @@ public enum DocumentCommand implements Command<Document> {
             Document newDocument = new Document( newId );
             
             dbOperator.create( newDocument );
-            Document createdDocument = dbOperator.getRealmObject(
+            Document managedDocument = dbOperator.getRealmObject(
                             Document.class, Document.PRIMARY_KEY, newId);
             
-            viewer.setSelectedContent( createdDocument );
-            viewer.transitViewPage( LayoutDefine.EDITOR );
+            viewer.show( managedDocument );
+//            viewer.setSelectedContent( createdDocument );
+//            viewer.transitViewPage( LayoutDefine.EDITOR );
         }
     },
     /**
@@ -38,42 +41,22 @@ public enum DocumentCommand implements Command<Document> {
     READ      ( R.integer.reload_operation ) {
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
+            Iterator<Document> documentIterator = null;
             if( !dbOperator.isNull() ) {
-                viewer.setContents( dbOperator.readAll(Document.class) );
+                documentIterator = dbOperator.readAll( Document.class ) ;
             }
-            viewer.transitViewPage( LayoutDefine.TITLE_LIST );
-            viewer.updateConnectString( dbOperator.getCurrentConnect() );
             
-//            if( dbOperator.isNull() ) return;
-//            viewer.display( dbOperator.readAll(Document.class) );
-        }
-    },
-    UPDATE    ( R.id.update_button ){
-        @Override
-        public void execute(Viewer<Document> viewer, DBOperator dbOperator){
-            
-            if( dbOperator.isNull() ) return;
-            
-            dbOperator.update( viewer.confirmUpdate() );
-        }
-    },
-    DELETE    ( R.id.list_item ){
-        @Override
-        public void execute(Viewer<Document> viewer, DBOperator dbOperator){
-            
-            if( dbOperator.isNull() ) return;
-            
-            dbOperator.delete( viewer.getSelectedContent() );
-            
-            READ.execute( viewer, dbOperator );
+            viewer.show( documentIterator );
+            viewer.setConnectString( dbOperator.getCurrentConnect() );
         }
     },
     SWITCH_CONNECT( R.id.sync_async_button ){
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
             ConnectType connectType = dbOperator.getCurrentConnect();
+            //切り替えメソッド
             connectType.switches( dbOperator );
-            
+            //切り替え後のデータを表示する
             READ.execute( viewer, dbOperator );
         }
     },
@@ -100,7 +83,7 @@ public enum DocumentCommand implements Command<Document> {
     
     private final int _UIId;
     
-    DocumentCommand(int UIId){
+    DocumentUICommand(int UIId){
         this._UIId = UIId;
     }
     

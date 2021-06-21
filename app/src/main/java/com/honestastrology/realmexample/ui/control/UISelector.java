@@ -7,21 +7,21 @@ import io.realm.RealmObject;
 
 class UISelector<T extends RealmObject> implements Selector<T> {
     
-    UISelector(Command<T>[] uiCommandValues){
+    UISelector(ReceiveCommand<T>[] uiReceiveCommandValues){
         _clickSelector = new HashMap<>();
-        for(Command<T> uiCommand: uiCommandValues ){
-            _clickSelector.put(uiCommand.getUIId(), uiCommand);
+        for(ReceiveCommand<T> uiReceiveCommand : uiReceiveCommandValues){
+            _clickSelector.put(uiReceiveCommand.getUIId(), uiReceiveCommand);
         }
     }
     
     @Override
-    public Command<T> selectCommand(int uiId){
+    public ReceiveCommand<T> selectCommand(int uiId){
         return _clickSelector.containsKey( uiId ) ?
                                         _clickSelector.get( uiId )
-                                        : Command.getNullInstance();
+                                        : ReceiveCommand.getNullInstance();
     }
     
-    private final Map<Integer, Command<T>> _clickSelector;
+    private final Map<Integer, ReceiveCommand<T>> _clickSelector;
     
     
 }

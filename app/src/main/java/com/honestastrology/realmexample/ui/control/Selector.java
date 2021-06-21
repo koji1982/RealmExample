@@ -5,10 +5,10 @@ import io.realm.RealmObject;
 public interface Selector<E extends RealmObject> {
     
     public static <T extends RealmObject>
-    Selector<T> create(Command<T>[] uiCommandValues){
-        return new UISelector<>(uiCommandValues);
+    Selector<T> create(ReceiveCommand<T>[] uiReceiveCommandValues){
+        return new UISelector<>(uiReceiveCommandValues);
     }
     
-    public Command<E> selectCommand(int uiId);
+    public ReceiveCommand<E> selectCommand(int uiId);
     
 }

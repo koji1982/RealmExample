@@ -11,9 +11,10 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="delete_ask">Delete OK ?</string>
+    <string name="back_ask">Back OK ?</string>
     <string name="to_sync">to Sync</string>
     <string name="to_async">to Async</string>
-    <string name="back_button">Back</string>
+    <string name="back">Back</string>
     <string name="title_info">Title</string>
     <string name="body_info">Body</string>
     <string name="no_title">"    No title"</string>

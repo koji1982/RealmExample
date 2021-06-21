@@ -3,25 +3,33 @@ package com.honestastrology.realmexample;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
+import com.honestastrology.realmexample.ui.control.CommandControl;
 import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
 import com.honestastrology.realmexample.ui.view.Viewer;
-import com.honestastrology.realmexample.ui.view.ViewPage;
+import com.honestastrology.realmexample.ui.view.Page;
 
-class TitleListPage implements ViewPage<Document> {
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+class TitleListPage implements Page<Document> {
     
-    private final Viewer<Document> _viewer;
-    private final LayoutSwitcher   _layoutSwitcher;
-    private final DeleteDialog     _deleteDialog;
+    private final Viewer<Document>         _viewer;
+    private final LayoutSwitcher           _layoutSwitcher;
+    private final CommandControl<Document> _commandControl;
     
     private final ArrayAdapter<Document> _innerListAdapter;
     
+    private final DeleteDialog             _deleteDialog;
     
     TitleListPage(@NonNull MainActivity     mainActivity,
                   @NonNull Viewer<Document> viewer       ){
         _layoutSwitcher = mainActivity;
+        _commandControl = mainActivity;
         //ArrayAdapterはxmlレイアウトファイルから取得できないため、
         //ここで生成したものを保持しておく
         _innerListAdapter = new ArrayAdapter<>( mainActivity, R.layout.list_inner_text );
@@ -30,24 +38,32 @@ class TitleListPage implements ViewPage<Document> {
         _deleteDialog = new DeleteDialog( mainActivity );
     }
     
-    @Override
-    public void showContent(){
+    void showDocumentList(Iterator<Document> documentIterator){
+        //画面のレイアウト変更
+        _layoutSwitcher.changeContentView( LayoutDefine.TITLE_LIST );
+        //nullの場合はそのまま終了
+        if( documentIterator == null ) return;
         
+        //Adapterに渡すためにListに入れ替える
+        List<Document> documentList = new ArrayList<>();
+        while( documentIterator.hasNext() ){
+            documentList.add( documentIterator.next() );
+        }
         _innerListAdapter.clear();
-        _innerListAdapter.addAll( _viewer.getContents() );
+        _innerListAdapter.addAll( documentList );
         
-        _layoutSwitcher.changeContentView( R.layout.entry_title_list );
+        //レイアウトxml経由でListViewインスタンスを取り出してAdapterをセットする
         AdapterView<ArrayAdapter<Document>> titleListView
-                = _layoutSwitcher.getViewFromCurrentLayout( R.id.document_title_list );
+                = _layoutSwitcher.getParts( PartsDefine.TITLE_LIST );
         titleListView.setAdapter( _innerListAdapter );
+        
+        //イベントリスナーをセットする
         titleListView.setOnItemClickListener( new ListClickListener() );
         titleListView.setOnItemLongClickListener( new LongClickListener() );
-    }
-    
-    //TitleListPageではDocumentの変更・更新を行わない
-    @Override
-    public void updateContent(){
-        
+        Button newNoteButton   = _layoutSwitcher.getParts( PartsDefine.NEW_NOTE_BUTTON );
+        Button syncAsyncButton = _layoutSwitcher.getParts( PartsDefine.SYNC_ASYNC_BUTTON );
+        newNoteButton.setOnClickListener( new NewButtonClickListener() );
+        syncAsyncButton.setOnClickListener( new SyncAsyncClickListener() );
     }
     
     private class ListClickListener implements AdapterView.OnItemClickListener {
@@ -58,8 +74,7 @@ class TitleListPage implements ViewPage<Document> {
                                 int            position,
                                 long           id ){
             Document selectedDocument = (Document)adapterView.getItemAtPosition(position);
-            _viewer.setSelectedContent( selectedDocument );
-            _viewer.transitViewPage( LayoutDefine.EDITOR );
+            _viewer.show( selectedDocument );
         }
     }
     
@@ -70,9 +85,22 @@ class TitleListPage implements ViewPage<Document> {
                                        int            position,
                                        long           id) {
             Document selectedDocument = (Document)adapterView.getItemAtPosition(position);
-            _viewer.setSelectedContent( selectedDocument );
-            _deleteDialog.show(view);
+            _deleteDialog.showConfirm( selectedDocument );
             return true;
+        }
+    }
+    
+    private class NewButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            _commandControl.request( DocumentUICommand.CREATE );
+        }
+    }
+    
+    private class SyncAsyncClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            _commandControl.request( DocumentUICommand.SWITCH_CONNECT );
         }
     }
 }
