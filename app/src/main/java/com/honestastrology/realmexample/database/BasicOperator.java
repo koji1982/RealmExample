@@ -40,7 +40,7 @@ class BasicOperator implements DBOperator {
     
     //In-MemoryでRealmインスタンスを作成する場合のコンストラクタ
     BasicOperator(Context context, DBErrorCallback errorCallback){
-//        Realm.init( context );
+        Realm.init( context );
         _currentDBAccessor = new InMemoryDBAccessor();
         _errorCallback     = errorCallback;
         

@@ -21,8 +21,8 @@ public interface DBOperator {
                                                  String          asyncFileName,
                                                  String          syncId,
                                                  DBErrorCallback errorCallback){
-        return new BasicOperator(context,errorCallback);
-//        return new BasicOperator(context, asyncFileName, syncId, errorCallback);
+//        return new BasicOperator(context,errorCallback);
+        return new BasicOperator(context, asyncFileName, syncId, errorCallback);
     }
     
     public boolean isNull();

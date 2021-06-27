@@ -14,6 +14,8 @@ class InMemoryDBAccessor implements DBAccessor {
         RealmConfiguration config = new RealmConfiguration.Builder()
                                             .inMemory()
                                             .name("test-realm")
+                                            .allowQueriesOnUiThread( true )
+                                            .allowWritesOnUiThread( true )
                                             .build();
         _inMemoryRealm = Realm.getInstance( config );
     }

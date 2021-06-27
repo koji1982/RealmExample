@@ -86,8 +86,12 @@ class SyncAccessor implements DBAccessor {
     
     @Override
     public void close(){
-        _user.logOutAsync(result -> {});
-        _syncRealm.close();
+        if( _user != null ){
+            _user.logOutAsync(result -> {});
+        }
+        if( _syncRealm != null ){
+            _syncRealm.close();
+        }
     }
     
     private SyncConfiguration createConfig(User user){
