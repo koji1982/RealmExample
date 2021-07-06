@@ -43,16 +43,24 @@ public class Document extends RealmObject {
     }
     
     public void updateTitle(String title) {
-        getRealm().executeTransaction(
-                realmTransaction -> this._title = title
-        );
+        if( isManaged() ){
+            getRealm().executeTransaction(
+                    realmTransaction -> this._title = title
+            );
+        } else {
+            this._title = title;
+        }
         
     }
     
     public void updateText(String text){
-        getRealm().executeTransaction(
-                realmTransaction -> this._text = text
-        );
+        if( isManaged() ){
+            getRealm().executeTransaction(
+                    realmTransaction -> this._text = text
+            );
+        } else {
+            this._text = text;
+        }
     }
     
 }

@@ -1,9 +1,7 @@
 package com.honestastrology.realmexample;
 
-import android.app.Instrumentation;
 import android.widget.ListView;
 
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.NoMatchingViewException;
 
 import com.honestastrology.realmexample.ui.view.Viewer;
@@ -15,14 +13,13 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.honestastrology.realmexample.TestHelper.createDocumentIterator;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
@@ -41,10 +38,9 @@ public class TitleListPageTest {
     //TitleListPageはNullを渡された場合でも画面遷移を行う
     @Test
     public void showDocumentListNullArg(){
-        //画面を変更する
+        //画面を変更して、対象の表示されていないことを確認
         _activity.changeContentView( LayoutDefine.EDITOR );
         try {
-            //画面が変更されているので表示されていないことを確認
             onView( withId( R.id.main_frame_layout ))
                     .check( matches( isDisplayed() ));
             fail();
@@ -59,16 +55,15 @@ public class TitleListPageTest {
     
     @Test
     public void showDocumentListTest(){
-        //画面を変更する
+        //画面を変更して、対象のレイアウトパーツが表示されていないことを確認
         _activity.changeContentView( LayoutDefine.EDITOR );
         try {
-            //画面が変更されているので表示されていないことを確認
             onView( withId( R.id.document_title_list ))
                     .check( matches( isDisplayed() ));
             fail();
         } catch ( NoMatchingViewException expected) {
         }
-        Iterator<Document> documentIterator = genDocumentIterator();
+        Iterator<Document> documentIterator = createDocumentIterator();
         //テスト対象メソッド
         _titleListPage.showDocumentList( documentIterator );
         //Iteratorを渡された時に正常に表示されていることを確認
@@ -79,7 +74,7 @@ public class TitleListPageTest {
     @Test
     public void onItemClickTest(){
         //インデックスとIDが同じになるように生成したListViewを取得する
-        Iterator<Document> documentIterator = genDocumentIterator();
+        Iterator<Document> documentIterator = createDocumentIterator();
         _titleListPage.showDocumentList( documentIterator );
         ListView titleList = ( ListView )_activity.getParts( PartsDefine.TITLE_LIST );
         
@@ -103,7 +98,7 @@ public class TitleListPageTest {
     @Test
     public void onItemLongClickTest(){
         //インデックスとIDが同じになるように生成したListViewを取得する
-        Iterator<Document> documentIterator = genDocumentIterator();
+        Iterator<Document> documentIterator = createDocumentIterator();
         _titleListPage.showDocumentList( documentIterator );
         ListView titleList = ( ListView )_activity.getParts( PartsDefine.TITLE_LIST );
         
@@ -122,17 +117,17 @@ public class TitleListPageTest {
         assertEquals( targetIndex, getDeleteTargetId() );
     }
     
-    //ヘルパー関数
-    private Iterator<Document> genDocumentIterator(){
-        //テスト用のDocumentリストを準備して返す
-        List<Document> documentList = new ArrayList<>();
-        documentList.add( new Document(0) );
-        documentList.add( new Document(1) );
-        documentList.add( new Document(2) );
-        documentList.add( new Document(3) );
-        documentList.add( new Document(4) );
-        return documentList.iterator();
-    }
+//    //ヘルパー関数
+//    private Iterator<Document> genDocumentIterator(){
+//        //テスト用のDocumentリストを準備して返す
+//        List<Document> documentList = new ArrayList<>();
+//        documentList.add( new Document(0) );
+//        documentList.add( new Document(1) );
+//        documentList.add( new Document(2) );
+//        documentList.add( new Document(3) );
+//        documentList.add( new Document(4) );
+//        return documentList.iterator();
+//    }
     
     //ヘルパー関数
     //EditPageで表示されているDocumentのIDをリフレクションで返す

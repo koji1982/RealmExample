@@ -26,7 +26,7 @@ class BackConfirmDialog {
     private class BackButton implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            _commandControl.request( DocumentUICommand.READ );
+            _commandControl.request( RequestCommand.READ );
         }
     }
     

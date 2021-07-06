@@ -11,11 +11,11 @@ import io.realm.RealmObject;
  * */
 public interface Viewer<E extends RealmObject> {
     
-    /** DB接続切り替え時のViewer側の処理 */
-    public void setConnectString(ConnectType ConnectType);
-    
-    public void show(Iterator<E> iterator);
+    public void showList(Iterator<E> iterator);
     
     public void show(E realmObject);
+    
+    /** DB接続切り替え時のViewer側の処理 */
+    public void displayConnectString(ConnectType ConnectType);
     
 }

@@ -11,7 +11,7 @@ import java.util.Iterator;
  * 
  */
 
-public enum DocumentUICommand implements ReceiveCommand<Document> {
+public enum RequestCommand implements ReceiveCommand<Document> {
     /**
      * Documentを新しく作成し、編集画面に切り替える
      * 編集する際にRealmObjectとして登録されていなければならないため
@@ -46,8 +46,8 @@ public enum DocumentUICommand implements ReceiveCommand<Document> {
                 documentIterator = dbOperator.readAll( Document.class ) ;
             }
             
-            viewer.show( documentIterator );
-            viewer.setConnectString( dbOperator.getCurrentConnect() );
+            viewer.showList( documentIterator );
+            viewer.displayConnectString( dbOperator.getCurrentConnect() );
         }
     },
     SWITCH_CONNECT( R.id.sync_async_button ){
@@ -83,7 +83,7 @@ public enum DocumentUICommand implements ReceiveCommand<Document> {
     
     private final int _UIId;
     
-    DocumentUICommand(int UIId){
+    RequestCommand(int UIId){
         this._UIId = UIId;
     }
     

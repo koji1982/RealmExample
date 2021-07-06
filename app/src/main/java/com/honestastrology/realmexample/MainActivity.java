@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity
         //MVC各インターフェースを実装したクラスの初期化
         _viewer         = new DocumentViewer( this );
         _dbOperator     = createDBOperator();
-        _buttonSelector = Selector.create( DocumentUICommand.values() );
+        _buttonSelector = Selector.create( RequestCommand.values() );
         
         //データを読込み、起動画面を表示する
-        DocumentUICommand.READ.execute( _viewer, _dbOperator );
+        RequestCommand.READ.execute( _viewer, _dbOperator );
     }
     
     //データベースを使わずにテストする場合の為に、
@@ -72,13 +72,13 @@ public class MainActivity extends AppCompatActivity
     }
     
     @Override
-    public void request(ReceiveCommand<Document> command){
+    public void request(@NonNull ReceiveCommand<Document> command){
         command.execute(_viewer, _dbOperator);
     }
     
     @Override
-    public void send(SendCommand<Document> command,
-                     Document              sendTarget ){
+    public void send(@NonNull SendCommand<Document> command,
+                     @NonNull Document              sendTarget ){
         command.execute( _dbOperator, sendTarget );
     }
     
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
             finish();
             return;
         }
-        DocumentUICommand.READ.execute( _viewer, _dbOperator );
+        RequestCommand.READ.execute( _viewer, _dbOperator );
     }
     
     // 画面遷移のリクエストを受け取るコールバック

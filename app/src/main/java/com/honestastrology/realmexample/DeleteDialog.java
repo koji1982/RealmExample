@@ -30,7 +30,7 @@ class DeleteDialog {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             _commandControl.send( DocumentSendCommand.DELETE, _deleteTarget );
-            _commandControl.request( DocumentUICommand.READ );
+            _commandControl.request( RequestCommand.READ );
             _deleteTarget = null;
         }
     }

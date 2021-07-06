@@ -25,7 +25,7 @@ class DocumentViewer implements Viewer<Document>{
     }
     
     @Override
-    public void show(Iterator<Document> documentIterator){
+    public void showList(Iterator<Document> documentIterator){
         _titleListPage.showDocumentList( documentIterator );
     }
     
@@ -35,7 +35,7 @@ class DocumentViewer implements Viewer<Document>{
     }
     
     @Override
-    public void setConnectString(ConnectType connectType){
+    public void displayConnectString(ConnectType connectType){
         _displayTextChanger.setConnectType( connectType.getDisplayName() );
         _displayTextChanger.setSwitcherText( connectType.getTargetName() );
     }

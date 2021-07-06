@@ -93,14 +93,14 @@ class TitleListPage implements Page<Document> {
     private class NewButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            _commandControl.request( DocumentUICommand.CREATE );
+            _commandControl.request( RequestCommand.CREATE );
         }
     }
     
     private class SyncAsyncClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            _commandControl.request( DocumentUICommand.SWITCH_CONNECT );
+            _commandControl.request( RequestCommand.SWITCH_CONNECT );
         }
     }
 }

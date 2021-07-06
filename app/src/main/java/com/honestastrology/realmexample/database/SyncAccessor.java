@@ -35,6 +35,10 @@ class SyncAccessor implements DBAccessor {
                 errorCallback.onError( LOGIN_ERROR_MESSAGE );
             }
         };
+        
+        //既にLogin状態なら終了
+        if ( isLoggedIn( app ) ) return;
+        
         app.loginAsync( credentials, callback );
     }
     
@@ -100,6 +104,11 @@ class SyncAccessor implements DBAccessor {
                            .allowQueriesOnUiThread(true)
                            .allowWritesOnUiThread(true)
                            .build();
+    }
+    
+    private boolean isLoggedIn(App app){
+        User user = app.currentUser();
+        return ( user != null && user.isLoggedIn() );
     }
     
 }

@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import com.honestastrology.realmexample.ui.control.CommandControl;
 import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
 import com.honestastrology.realmexample.ui.view.Viewer;
-import com.honestastrology.realmexample.ui.view.Page;
 
 class EditPage {
     
@@ -44,7 +43,7 @@ class EditPage {
         _document = document;
     }
     
-    //その時点でのエディターの入力文字列が、保存された文字列から変更されたかを返す
+    //その時点でのユーザー入力文字列が、保存されている文字列から変更されたかを返す
     private boolean isChanged(){
         TextView titleText
                 = _layoutSwitcher.getParts( PartsDefine.TITLE_TEXT );
@@ -73,7 +72,9 @@ class EditPage {
             _document.updateTitle( titleText.getText().toString() );
             _document.updateText( bodyText.getText().toString() );
             
-            _commandControl.send( DocumentSendCommand.UPDATE, _document);
+            if( !(_document.isManaged()) ){
+                _commandControl.send( DocumentSendCommand.UPDATE, _document);
+            }
         }
     }
     
@@ -84,7 +85,7 @@ class EditPage {
                 _backConfirmDialog.showConfirm();
                 return;
             }
-            _commandControl.request( DocumentUICommand.READ );
+            _commandControl.request( RequestCommand.READ );
         }
     }
     
