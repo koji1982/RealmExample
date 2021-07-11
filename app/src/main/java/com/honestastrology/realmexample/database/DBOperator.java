@@ -13,15 +13,15 @@ public interface DBOperator {
     }
     
     public static DBOperator getInMemoryInstance(Context         context,
+                                                 String          syncId,
                                                  DBErrorCallback errorCallback){
-        return new BasicOperator(context, errorCallback);
+        return new BasicOperator(context, syncId, errorCallback);
     }
     
     public static DBOperator createBasicOperator(Context         context,
                                                  String          asyncFileName,
                                                  String          syncId,
                                                  DBErrorCallback errorCallback){
-//        return new BasicOperator(context,errorCallback);
         return new BasicOperator(context, asyncFileName, syncId, errorCallback);
     }
     

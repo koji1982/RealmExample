@@ -4,7 +4,7 @@ import com.honestastrology.realmexample.database.DBOperator;
 import com.honestastrology.realmexample.ui.control.SendCommand;
 import com.honestastrology.realmexample.ui.view.Viewer;
 
-enum DocumentSendCommand implements SendCommand<Document> {
+enum DBSendCommand implements SendCommand<Document> {
     
     UPDATE  {
         @Override

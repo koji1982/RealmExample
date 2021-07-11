@@ -39,13 +39,20 @@ class BasicOperator implements DBOperator {
     }
     
     //In-MemoryでRealmインスタンスを作成する場合のコンストラクタ
-    BasicOperator(Context context, DBErrorCallback errorCallback){
+    BasicOperator(Context context,
+                  String  syncId,
+                  DBErrorCallback errorCallback){
         Realm.init( context );
-        _currentDBAccessor = new InMemoryDBAccessor();
+//        _currentDBAccessor = new InMemoryDBAccessor();
         _errorCallback     = errorCallback;
         
-        _asyncDB = DBAccessor.getNullInstance();
-        _syncDB  = DBAccessor.getNullInstance();
+//        _asyncDB = DBAccessor.getNullInstance();
+//        _syncDB  = DBAccessor.getNullInstance();
+        
+        _asyncDB = new AsyncAccessor( RealmConnectType.IN_MEMORY );
+        _syncDB  = new SyncAccessor(
+                        syncId, errorCallback, RealmConnectType.IN_MEMORY);
+        _currentDBAccessor = _syncDB;
     }
     
     @Override

@@ -14,8 +14,7 @@ import com.honestastrology.realmexample.ui.view.LayoutType;
 import com.honestastrology.realmexample.ui.view.Parts;
 import com.honestastrology.realmexample.ui.view.Viewer;
 import com.honestastrology.realmexample.database.DBOperator;
-import com.honestastrology.realmexample.ui.control.Selector;
-import com.honestastrology.realmexample.ui.control.ReceiveCommand;
+import com.honestastrology.realmexample.ui.control.RequestCommand;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     
     private DBOperator         _dbOperator;
     private Viewer<Document>   _viewer;
-    private Selector<Document> _buttonSelector;
+    
     //LayoutSwitcherとして、currentのLayoutTypeを保持する
     private LayoutType         _currentLayoutType;
     
@@ -49,10 +48,9 @@ public class MainActivity extends AppCompatActivity
         //MVC各インターフェースを実装したクラスの初期化
         _viewer         = new DocumentViewer( this );
         _dbOperator     = createDBOperator();
-        _buttonSelector = Selector.create( RequestCommand.values() );
         
         //データを読込み、起動画面を表示する
-        RequestCommand.READ.execute( _viewer, _dbOperator );
+        UIRequestCommand.READ.execute( _viewer, _dbOperator );
     }
     
     //データベースを使わずにテストする場合の為に、
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity
     }
     
     @Override
-    public void request(@NonNull ReceiveCommand<Document> command){
+    public void request(@NonNull RequestCommand<Document> command){
         command.execute(_viewer, _dbOperator);
     }
     
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity
             finish();
             return;
         }
-        RequestCommand.READ.execute( _viewer, _dbOperator );
+        UIRequestCommand.READ.execute( _viewer, _dbOperator );
     }
     
     // 画面遷移のリクエストを受け取るコールバック

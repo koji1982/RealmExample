@@ -1,5 +1,7 @@
 package com.honestastrology.realmexample;
 
+import androidx.annotation.NonNull;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -42,7 +44,7 @@ public class Document extends RealmObject {
         return _text;
     }
     
-    public void updateTitle(String title) {
+    public void updateTitle(@NonNull String title) {
         if( isManaged() ){
             getRealm().executeTransaction(
                     realmTransaction -> this._title = title
@@ -53,7 +55,7 @@ public class Document extends RealmObject {
         
     }
     
-    public void updateText(String text){
+    public void updateText(@NonNull String text){
         if( isManaged() ){
             getRealm().executeTransaction(
                     realmTransaction -> this._text = text

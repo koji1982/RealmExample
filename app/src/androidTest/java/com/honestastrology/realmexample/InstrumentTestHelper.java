@@ -5,10 +5,13 @@ import com.honestastrology.realmexample.database.DBOperator;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class ReflectionHelper {
+public class InstrumentTestHelper {
     
     public static DBOperator swapInMemoryOperator(MainActivity activity){
-        DBOperator dbOperator = DBOperator.getInMemoryInstance( activity, activity );
+        DBOperator dbOperator = DBOperator.getInMemoryInstance(
+                                                activity,
+                                                activity.getString(R.string.sync_id),
+                                                activity );
         try {
             //dbOperatorをinMemoryに入れ替える
             Field field = activity.getClass().getDeclaredField("_dbOperator");
@@ -36,7 +39,7 @@ public class ReflectionHelper {
     public static Document createTestDocument(DBOperator dbOperator){
         int newId = 0;
         try {
-            Method getNewIdMethod = RequestCommand.class
+            Method getNewIdMethod = UIRequestCommand.class
                                             .getDeclaredMethod("getNewId", DBOperator.class);
             getNewIdMethod.setAccessible( true );
             newId = (int)getNewIdMethod.invoke(null, dbOperator);
@@ -48,5 +51,16 @@ public class ReflectionHelper {
                 Document.class,
                 Document.PRIMARY_KEY,
                 newId );
+    }
+    
+    static Document createUnmanagedDocument(DBOperator dbOperator){
+        Document document = createTestDocument( dbOperator );
+        return document.getRealm().copyFromRealm( document );
+    }
+    
+    static void setupMultipleDocuments(DBOperator dbOperator){
+        for( int i=0; i<5; i++){
+            createTestDocument(dbOperator);
+        }
     }
 }

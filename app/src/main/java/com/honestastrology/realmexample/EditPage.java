@@ -73,7 +73,7 @@ class EditPage {
             _document.updateText( bodyText.getText().toString() );
             
             if( !(_document.isManaged()) ){
-                _commandControl.send( DocumentSendCommand.UPDATE, _document);
+                _commandControl.send( DBSendCommand.UPDATE, _document);
             }
         }
     }
@@ -85,7 +85,7 @@ class EditPage {
                 _backConfirmDialog.showConfirm();
                 return;
             }
-            _commandControl.request( RequestCommand.READ );
+            _commandControl.request( UIRequestCommand.READ );
         }
     }
     

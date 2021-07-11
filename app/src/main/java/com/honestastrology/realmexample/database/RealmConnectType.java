@@ -16,7 +16,11 @@ public enum RealmConnectType implements ConnectType {
     IN_MEMORY( "In-Memory DB", "In-Memory only"){
         @Override
         public void switches(DBOperator operator) {
-            
+        }
+    },
+    NULL( "Null DB", "Null"){
+        @Override
+        public void switches(DBOperator operator){
         }
     };
     

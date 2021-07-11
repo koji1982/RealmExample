@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.Field;
 
-import static com.honestastrology.realmexample.ReflectionHelper.*;
+import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -109,7 +109,7 @@ public class EditPageInstrumentTest {
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
             //EditPage画面を表示
-            activity.request( RequestCommand.CREATE );
+            activity.request( UIRequestCommand.CREATE );
             //backButtonクリック前はnullであることを確認
             assertNull( activity.findViewById(R.id.main_frame_layout) );
             
@@ -127,7 +127,7 @@ public class EditPageInstrumentTest {
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
             //EditPage画面を表示して、titleを変更する
-            activity.request( RequestCommand.CREATE );
+            activity.request( UIRequestCommand.CREATE );
             String saveTestTitle = "save test title";
             TextView titleText = activity.getParts( PartsDefine.TITLE_TEXT );
             titleText.setText( saveTestTitle );
@@ -148,7 +148,7 @@ public class EditPageInstrumentTest {
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
             //EditPage画面を表示して、titleを変更する
-            activity.request( RequestCommand.CREATE );
+            activity.request( UIRequestCommand.CREATE );
             String saveTestBody = "save test body";
             TextView bodyText = activity.getParts( PartsDefine.BODY_TEXT );
             bodyText.setText( saveTestBody );
@@ -169,7 +169,7 @@ public class EditPageInstrumentTest {
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
             //EditPage画面を表示して、titleを変更する
-            activity.request( RequestCommand.CREATE );
+            activity.request( UIRequestCommand.CREATE );
             String saveTestTitle = "save test title";
             String saveTestBody = "save test body";
             TextView titleText = activity.getParts( PartsDefine.TITLE_TEXT );

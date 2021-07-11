@@ -4,8 +4,11 @@ import java.util.Iterator;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
+import io.realm.internal.OsRealmConfig;
 
 class AsyncAccessor implements DBAccessor {
+    
+    private static final String IN_MEMORY_FILE_NAME = "in_memory_async";
     
     private Realm _asyncRealm;
     
@@ -16,6 +19,21 @@ class AsyncAccessor implements DBAccessor {
                                             .allowWritesOnUiThread(true)
                                             .build();
         _asyncRealm = Realm.getInstance( config );
+    }
+    
+    AsyncAccessor(ConnectType connectType){
+        if( connectType != RealmConnectType.IN_MEMORY){
+            throw new IllegalArgumentException();
+        }
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                                            .inMemory()
+                                            .name( IN_MEMORY_FILE_NAME )
+                                            .allowQueriesOnUiThread(true)
+                                            .allowWritesOnUiThread(true)
+                                            .build();
+        OsRealmConfig.Durability durability = config.getDurability();
+        _asyncRealm = Realm.getInstance( config );
+        Realm.setDefaultConfiguration( config );
     }
     
     @Override

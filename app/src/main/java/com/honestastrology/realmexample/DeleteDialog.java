@@ -22,6 +22,7 @@ class DeleteDialog {
     }
     
     void showConfirm(Document deleteTarget){
+        if( deleteTarget == null ) return;
         _deleteTarget = deleteTarget;
         _decisionDialog.show();
     }
@@ -29,8 +30,8 @@ class DeleteDialog {
     private class DeleteButton implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            _commandControl.send( DocumentSendCommand.DELETE, _deleteTarget );
-            _commandControl.request( RequestCommand.READ );
+            _commandControl.send( DBSendCommand.DELETE, _deleteTarget );
+            _commandControl.request( UIRequestCommand.READ );
             _deleteTarget = null;
         }
     }

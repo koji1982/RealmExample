@@ -2,8 +2,10 @@ package com.honestastrology.realmexample.database;
 
 import java.util.Iterator;
 
+import io.realm.BuildConfig;
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.internal.OsRealmConfig;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.Credentials;
@@ -26,9 +28,7 @@ class SyncAccessor implements DBAccessor {
         
         App.Callback<User> callback = result -> {
             if( result.isSuccess() ){
-                _user = app.currentUser();
-                SyncConfiguration config = createConfig( _user );
-                _syncRealm = Realm.getInstance( config );
+                setupRealm( app.currentUser() );
             } else {
                 _user      = null;
                 _syncRealm = null;
@@ -40,6 +40,30 @@ class SyncAccessor implements DBAccessor {
         if ( isLoggedIn( app ) ) return;
         
         app.loginAsync( credentials, callback );
+    }
+    
+    SyncAccessor(String syncId, DBErrorCallback errorCallback, ConnectType connectType){
+        if( RealmConnectType.IN_MEMORY != connectType ){
+            throw new IllegalArgumentException();
+        }
+        App inMemoryApp = new App( new AppConfiguration.Builder( syncId ).build());
+//        AppConfiguration appConfiguration = new AppConfiguration.Builder(syncId)
+//                                                    .appName(BuildConfig.VERSION_NAME)
+//                                                    .appVersion(Integer.toString(BuildConfig.VERSION_CODE))
+//                                                    .build();
+//        App inMemoryApp = new App( appConfiguration );
+        Credentials credentials = Credentials.anonymous();
+        App.Callback<User> callback = result -> {
+            if( result.isSuccess() ){
+                setupInMemoryRealm( inMemoryApp.currentUser() );
+            } else {
+                _user      = null;
+                _syncRealm = null;
+                errorCallback.onError( LOGIN_ERROR_MESSAGE );
+            }
+        };
+    
+        inMemoryApp.loginAsync( credentials, callback );
     }
     
     @Override
@@ -98,17 +122,35 @@ class SyncAccessor implements DBAccessor {
         }
     }
     
-    private SyncConfiguration createConfig(User user){
-        return new SyncConfiguration
-                           .Builder( user, PARTITION_VAL_USER_DOC )
-                           .allowQueriesOnUiThread(true)
-                           .allowWritesOnUiThread(true)
-                           .build();
-    }
-    
     private boolean isLoggedIn(App app){
         User user = app.currentUser();
-        return ( user != null && user.isLoggedIn() );
+        if ( user == null || !(user.isLoggedIn()) ) return false;
+        
+        setupRealm( user );
+        return true;
     }
     
+    private void setupRealm(User user){
+        SyncConfiguration config = new SyncConfiguration
+                                           .Builder( user, PARTITION_VAL_USER_DOC )
+                                           .allowQueriesOnUiThread(true)
+                                           .allowWritesOnUiThread(true)
+                                           .build();
+        _syncRealm = Realm.getInstance( config );
+        _user = user;
+    }
+    
+    private void setupInMemoryRealm(User user){
+        SyncConfiguration config = new SyncConfiguration
+                                           .Builder( user, "in_memory_document" )
+                                           .inMemory()
+                                           .allowQueriesOnUiThread(true)
+                                           .allowWritesOnUiThread(true)
+                                           .build();
+//        String name = config.getRealmFileName();
+//        OsRealmConfig.Durability syncDurability = config.getDurability();
+//        OsRealmConfig.Durability durability     = Realm.getDefaultConfiguration().getDurability();
+        _syncRealm = Realm.getInstance( config );
+        _user = user;
+    }
 }

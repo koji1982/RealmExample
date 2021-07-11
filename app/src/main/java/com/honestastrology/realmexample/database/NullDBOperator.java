@@ -20,7 +20,7 @@ enum NullDBOperator implements DBOperator {
     
     @Override
     public ConnectType getCurrentConnect(){
-        return RealmConnectType.ASYNC;
+        return RealmConnectType.NULL;
     }
     
     @Override

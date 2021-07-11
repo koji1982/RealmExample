@@ -16,8 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static com.honestastrology.realmexample.ReflectionHelper.createTestDocument;
-import static com.honestastrology.realmexample.ReflectionHelper.swapInMemoryOperator;
+import static com.honestastrology.realmexample.InstrumentTestHelper.createTestDocument;
+import static com.honestastrology.realmexample.InstrumentTestHelper.swapInMemoryOperator;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
@@ -47,7 +47,7 @@ public class MainActivityInstrumentTest {
             assertNull( activity.getParts( PartsDefine.BODY_TEXT ));
             
             //テスト対象
-            activity.request( RequestCommand.CREATE );
+            activity.request( UIRequestCommand.CREATE );
             
             //画面遷移、レイアウトパーツ、空文字列が表示されていることを確認
             TextView titleView = activity.getParts( PartsDefine.TITLE_TEXT );
@@ -64,7 +64,7 @@ public class MainActivityInstrumentTest {
     public void requestREADCommand(){
         _scenarioRule.getScenario().onActivity( activity -> {
             //EditPageを開く
-            activity.request( RequestCommand.CREATE );
+            activity.request( UIRequestCommand.CREATE );
             
             assertNull( activity.findViewById( R.id.main_frame_layout ));
             assertNull( activity.getParts( PartsDefine.TITLE_LIST ));
@@ -72,7 +72,7 @@ public class MainActivityInstrumentTest {
             assertNull( activity.getParts( PartsDefine.NEW_NOTE_BUTTON ));
             
             //テスト対象
-            activity.request( RequestCommand.READ );
+            activity.request( UIRequestCommand.READ );
     
             assertTrue( activity.findViewById( R.id.main_frame_layout ).isEnabled() );
             assertTrue( activity.getParts( PartsDefine.TITLE_LIST ).isEnabled() );
@@ -103,7 +103,7 @@ public class MainActivityInstrumentTest {
     public void sendUpdateWithNullThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
             assertThrows(IllegalArgumentException.class, () -> {
-                activity.send( DocumentSendCommand.UPDATE, null );
+                activity.send( DBSendCommand.UPDATE, null );
             });
         });
     }
@@ -112,7 +112,7 @@ public class MainActivityInstrumentTest {
     public void sendDeleteWithNullThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
             assertThrows(NullPointerException.class, () -> {
-                activity.send( DocumentSendCommand.DELETE, null );
+                activity.send( DBSendCommand.DELETE, null );
             });
         });
     }
@@ -122,7 +122,7 @@ public class MainActivityInstrumentTest {
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
             //準備として、unmanagedのRealmObjectを用意して文字列を更新する
-            Document document          = ReflectionHelper.createTestDocument( _dbOperator );
+            Document document          = InstrumentTestHelper.createTestDocument( _dbOperator );
             Document unmanagedDocument = document.getRealm().copyFromRealm( document );
             int primaryId = unmanagedDocument.getId();
             String updatedTitle = "updated title";
@@ -136,7 +136,7 @@ public class MainActivityInstrumentTest {
             assertEquals( "", preCheck.getText() );
             
             //テスト対象
-            activity.send( DocumentSendCommand.UPDATE, unmanagedDocument );
+            activity.send( DBSendCommand.UPDATE, unmanagedDocument );
             
             //データベース内の情報が更新されていることを確認
             Document postCheck = _dbOperator.getRealmObject(
@@ -158,7 +158,7 @@ public class MainActivityInstrumentTest {
             assertEquals( id, preCheck.getId() );
             
             //テスト対象
-            activity.send( DocumentSendCommand.DELETE, document );
+            activity.send( DBSendCommand.DELETE, document );
             
             //データベースのデータが無い(nullになっている)ことを確認
             Document postCheck = _dbOperator.getRealmObject(
@@ -181,7 +181,7 @@ public class MainActivityInstrumentTest {
             
             //テスト対象
             try {
-                activity.send( DocumentSendCommand.DELETE, null );
+                activity.send( DBSendCommand.DELETE, null );
                 fail();
             } catch (Exception expected){
             }
@@ -198,7 +198,7 @@ public class MainActivityInstrumentTest {
     //ヘルパー関数
     private void setupField(MainActivity activity){
         if( _isInitialized ) return;
-        _dbOperator = swapInMemoryOperator( activity );
+        _dbOperator    = swapInMemoryOperator( activity );
         _isInitialized = true;
     }
 }

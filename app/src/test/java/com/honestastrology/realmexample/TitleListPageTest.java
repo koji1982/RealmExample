@@ -117,18 +117,6 @@ public class TitleListPageTest {
         assertEquals( targetIndex, getDeleteTargetId() );
     }
     
-//    //ヘルパー関数
-//    private Iterator<Document> genDocumentIterator(){
-//        //テスト用のDocumentリストを準備して返す
-//        List<Document> documentList = new ArrayList<>();
-//        documentList.add( new Document(0) );
-//        documentList.add( new Document(1) );
-//        documentList.add( new Document(2) );
-//        documentList.add( new Document(3) );
-//        documentList.add( new Document(4) );
-//        return documentList.iterator();
-//    }
-    
     //ヘルパー関数
     //EditPageで表示されているDocumentのIDをリフレクションで返す
     //EditPageが表示されていない場合このメソッドは実行できない

@@ -39,12 +39,12 @@ public class DocumentViewerTest {
     
     @Test
     public void showListDocumentIterator(){
-        List<Document>     documentList  = createDocumentList();
-        Iterator<Document> argIterator   = documentList.iterator();
-        Iterator<Document> checkIterator = documentList.iterator();
+        List<Document>     documentList     = createDocumentList();
+        Iterator<Document> argInputIterator = documentList.iterator();
+        Iterator<Document> checkIterator    = documentList.iterator();
         
         //テスト対象
-        _viewer.showList( argIterator );
+        _viewer.showList( argInputIterator );
         
         //引数として渡す前のIDと表示されてるアイテムのIDが同じであることを確認
         ListView    listView = _mainActivity.getParts( PartsDefine.TITLE_LIST );
