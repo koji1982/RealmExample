@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        //MVC各インターフェースを実装したクラスの初期化
+        //このMainActivityが、DBOperatorとViewerの参照を保持しコントロールを行う
         _viewer         = new DocumentViewer( this );
         _dbOperator     = createDBOperator();
         
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
         UIRequestCommand.READ.execute( _viewer, _dbOperator );
     }
     
-    //データベースを使わずにテストする場合の為に、
+    //In-Memory DB, Null DBと入れ替える場合のために
     //生成メソッドとして抽出
     protected DBOperator createDBOperator(){
         return DBOperator.createBasicOperator(

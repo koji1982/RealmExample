@@ -19,6 +19,10 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static com.honestastrology.realmexample.UIRequestCommand.*;
@@ -32,8 +36,8 @@ public class UIRequestCommandInstrumentTest {
     private boolean          _isInitialized = false;
     
     @Rule
-    public ActivityScenarioRule<MainActivity> _scenarioRule
-            = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<InMemoryActivity> _scenarioRule
+            = new ActivityScenarioRule<>(InMemoryActivity.class);
     
     @Test
     public void executeCreateThrowsNull(){
@@ -153,29 +157,41 @@ public class UIRequestCommandInstrumentTest {
     @Test
     public void executeRead(){
         _scenarioRule.getScenario().onActivity( activity -> {
-            setupField( activity );
-            setupMultipleDocuments( _dbOperator );
-            Iterator<Document> preDBIterator = _dbOperator.readAll( Document.class );
-            
-            //テスト対象
-            READ.execute( _viewer, _dbOperator );
-            
-            //正しいレイアウトが表示されていること、
-            //ConnectTypeのタイトル表示・ボタン表示が正しいこと
-            //DB内のDocumentのIDと表示されているDocumentのIDが一致していることを確認
-            assertTrue( activity.findViewById( R.id.main_frame_layout ).isEnabled() );
-            assertTrue( activity.getTitle().toString().contains( 
-                            _dbOperator.getCurrentConnect().getDisplayName() ));
-            Button syncAsyncButton = activity.getParts( PartsDefine.SYNC_ASYNC_BUTTON);
-            assertEquals(
-                    _dbOperator.getCurrentConnect().getTargetName(),
-                    syncAsyncButton.getText().toString() );
-            ListView listView = activity.getParts( PartsDefine.TITLE_LIST );
-            ListAdapter adapter  = listView.getAdapter();
-            for( int i=0;i<adapter.getCount();i++){
+            CountDownLatch latch = new CountDownLatch( 1 );
+            DBOperator.SyncConnectedCallback callback = () -> {
+                setupMultipleDocuments( _dbOperator );
+                Iterator<Document> preDBIterator = _dbOperator.readAll( Document.class );
+    
+                //テスト対象
+                READ.execute( _viewer, _dbOperator );
+    
+                //正しいレイアウトが表示されていること、
+                //ConnectTypeのタイトル表示・ボタン表示が正しいこと
+                //DB内のDocumentのIDと表示されているDocumentのIDが一致していることを確認
+                assertTrue( activity.findViewById( R.id.main_frame_layout ).isEnabled() );
+                assertTrue( activity.getTitle().toString().contains(
+                        _dbOperator.getCurrentConnect().getDisplayName() ));
+                Button syncAsyncButton = activity.getParts( PartsDefine.SYNC_ASYNC_BUTTON);
                 assertEquals(
-                        preDBIterator.next().getId(),
-                        ((Document)adapter.getItem( i )).getId() );
+                        _dbOperator.getCurrentConnect().getTargetName(),
+                        syncAsyncButton.getText().toString() );
+                ListView listView = activity.getParts( PartsDefine.TITLE_LIST );
+                ListAdapter adapter  = listView.getAdapter();
+                for( int i=0;i<adapter.getCount();i++){
+                    assertEquals(
+                            preDBIterator.next().getId(),
+                            ((Document)adapter.getItem( i )).getId() );
+                }
+                latch.countDown();
+            };
+            setupSync( activity,callback );
+//            FutureTask<String> futureTask = new FutureTask<>(callback, "isDone");
+//            ExecutorService    executor   = Executors.newFixedThreadPool(2);
+//            executor.submit( futureTask );
+            try{
+                latch.await();
+            } catch (Exception e){
+                e.printStackTrace();
             }
         });
     }
@@ -216,21 +232,20 @@ public class UIRequestCommandInstrumentTest {
     @Test
     public void executeSwitchConnectToSync(){
         _scenarioRule.getScenario().onActivity( activity -> {
-            setupField( activity );
-            assertTrue( activity.getTitle().toString().contains(
-                                                RealmConnectType.ASYNC.getDisplayName() ));
-            Button preButton = activity.getParts( PartsDefine.SYNC_ASYNC_BUTTON );
-            assertEquals( RealmConnectType.ASYNC.getTargetName(), preButton.getText().toString());
-            
-            //テスト対象
-            SWITCH_CONNECT.execute( _viewer, _dbOperator );
-            
-            //本来ならSyncに切り替わるが、テストではSyncが使えないため、
-            //In-memoryでテストする
-            assertTrue( activity.getTitle().toString().contains(
-                    RealmConnectType.IN_MEMORY.getDisplayName() ));
-            Button postButton = activity.getParts( PartsDefine.SYNC_ASYNC_BUTTON );
-            assertEquals( RealmConnectType.IN_MEMORY.getTargetName(), postButton.getText().toString());
+            setupSync( activity , () -> {
+                assertTrue( activity.getTitle().toString().contains(
+                        RealmConnectType.ASYNC.getDisplayName() ));
+                Button preButton = activity.getParts( PartsDefine.SYNC_ASYNC_BUTTON );
+                assertEquals( RealmConnectType.ASYNC.getTargetName(), preButton.getText().toString());
+    
+                //テスト対象
+                SWITCH_CONNECT.execute( _viewer, _dbOperator );
+    
+                assertTrue( activity.getTitle().toString().contains(
+                        RealmConnectType.SYNC.getDisplayName() ));
+                Button postButton = activity.getParts( PartsDefine.SYNC_ASYNC_BUTTON );
+                assertEquals( RealmConnectType.SYNC.getTargetName(), postButton.getText().toString());
+            });
         });
     }
     
@@ -242,6 +257,16 @@ public class UIRequestCommandInstrumentTest {
         _dbOperator = swapInMemoryOperator( activity );
         _viewer     = new DocumentViewer( activity );
         _isInitialized = true;
+    }
+    
+    private void setupSync(MainActivity activity, DBOperator.SyncConnectedCallback callback){
+        if( !_isInitialized ){
+            _dbOperator = swapInMemorySyncOperator( activity, callback );
+            _viewer     = new DocumentViewer( activity );
+            _isInitialized = true;
+        } else {
+            callback.run();
+        }
     }
     
     //ヘルパー関数

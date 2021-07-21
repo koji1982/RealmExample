@@ -13,9 +13,14 @@ android {
         versionName "1.0"
         multiDexEnabled true
 
+//        testApplicationId "com.honestastrology.realmexample"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testHandleProfiling true
+        testFunctionalTest true
     }
-
+//    sourceSets {
+//        androidTest.manifest.srcFile "src/androidTest/AndroidManifest.xml"
+//    }
     buildTypes {
         release {
             minifyEnabled false
@@ -26,6 +31,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+//    testBuildType "debug"
     testOptions {
         unitTests.includeAndroidResources = true
         unitTests.returnDefaultValues = true
@@ -48,19 +54,19 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'org.jmockit:jmockit:1.8'
-//    testImplementation 'io.reactivex.rxjava2:rxjava:2.1.13'
     testImplementation 'androidx.test:runner:1.3.0'
     testImplementation 'androidx.test:rules:1.3.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.test.ext:junit:1.1.2'
     testImplementation 'androidx.test:core:1.3.0'
-//    testImplementation 'org.jmockit:jmockit:1.8'
     testImplementation 'org.mockito:mockito-core:1.10.19'
     testImplementation 'org.robolectric:robolectric:4.4'
     testImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+//    androidTestImplementation 'androidx.appcompat:appcompat:1.2.0'
+//    androidTestImplementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+//    androidTestImplementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-//    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.google.android.material:material:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:core:1.3.0'

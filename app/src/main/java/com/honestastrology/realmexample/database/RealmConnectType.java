@@ -13,11 +13,6 @@ public enum RealmConnectType implements ConnectType {
             operator.toSync();
         }
     },
-    IN_MEMORY( "In-Memory DB", "In-Memory only"){
-        @Override
-        public void switches(DBOperator operator) {
-        }
-    },
     NULL( "Null DB", "Null"){
         @Override
         public void switches(DBOperator operator){

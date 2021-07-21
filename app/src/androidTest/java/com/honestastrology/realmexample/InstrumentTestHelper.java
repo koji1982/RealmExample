@@ -1,17 +1,18 @@
 package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.database.DBOperator;
+import com.honestastrology.realmexample.database.Persistence;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InstrumentTestHelper {
     
     public static DBOperator swapInMemoryOperator(MainActivity activity){
         DBOperator dbOperator = DBOperator.getInMemoryInstance(
-                                                activity,
-                                                activity.getString(R.string.sync_id),
-                                                activity );
+                                                activity, Persistence.TEMPORARY);
         try {
             //dbOperatorをinMemoryに入れ替える
             Field field = activity.getClass().getDeclaredField("_dbOperator");
@@ -22,7 +23,33 @@ public class InstrumentTestHelper {
         return dbOperator;
     }
     
-    static EditPage extractEditPage(MainActivity activity){
+//    public static DBOperator swapInMemorySyncOperator(MainActivity activity,
+//                                                      DBOperator.SyncConnectedCallback syncCallback){
+//        try {
+//            Field field_operator = activity.getClass().getDeclaredField("_dbOperator");
+//            field_operator.setAccessible( true );
+//            DBOperator dbOperator = (DBOperator)field_operator.get(activity);
+//            dbOperator.closeAll();
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        DBOperator dbOperator = DBOperator.getInMemorySyncInstance(
+//                                                    activity,
+//                                                    activity.getString(R.string.sync_id),
+//                                                    activity,
+//                                                    syncCallback );
+//        try {
+//            //dbOperatorをinMemoryに入れ替える
+//            Field field = activity.getClass().getDeclaredField("_dbOperator");
+//            field.setAccessible( true );
+//            field.set(activity, dbOperator );
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return dbOperator;
+//    }
+    
+    public static EditPage extractEditPage(MainActivity activity){
         try {
             //MainActivityからEditPageを取り出す
             Field field_viewer = activity.getClass().getDeclaredField("_viewer");
@@ -53,14 +80,17 @@ public class InstrumentTestHelper {
                 newId );
     }
     
-    static Document createUnmanagedDocument(DBOperator dbOperator){
+    public static Document createUnmanagedDocument(DBOperator dbOperator){
         Document document = createTestDocument( dbOperator );
         return document.getRealm().copyFromRealm( document );
     }
     
-    static void setupMultipleDocuments(DBOperator dbOperator){
+    public static List<Document> setupMultipleDocuments(DBOperator dbOperator){
+        List<Document> idList = new ArrayList<>();
         for( int i=0; i<5; i++){
-            createTestDocument(dbOperator);
+            Document createdDocument = createTestDocument(dbOperator);
+            idList.add( createdDocument );
         }
+        return idList;
     }
 }

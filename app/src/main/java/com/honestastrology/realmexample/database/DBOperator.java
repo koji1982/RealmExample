@@ -12,11 +12,18 @@ public interface DBOperator {
         return NullDBOperator.getInstance();
     }
     
-    public static DBOperator getInMemoryInstance(Context         context,
-                                                 String          syncId,
-                                                 DBErrorCallback errorCallback){
-        return new BasicOperator(context, syncId, errorCallback);
+    public static DBOperator getInMemoryInstance(Context     context,
+                                                 Persistence persistence){
+        //SyncPreparedCallbackが指定されていない場合は、処理を行わないオブジェクトを渡す
+        return new BasicOperator(context, persistence);
     }
+    
+//    public static DBOperator getInMemorySyncInstance(Context context,
+//                                                     String syncId,
+//                                                     DBErrorCallback errorCallback,
+//                                                     SyncConnectedCallback syncCallback){
+//        return new BasicOperator(context, syncId, errorCallback, syncCallback);
+//    }
     
     public static DBOperator createBasicOperator(Context         context,
                                                  String          asyncFileName,
@@ -48,5 +55,11 @@ public interface DBOperator {
     public void delete(RealmObject realmObject);
     
     public void closeAll();
+    
+    public interface SyncConnectedCallback extends Runnable {
+        
+        public void run();
+        
+    }
     
 }

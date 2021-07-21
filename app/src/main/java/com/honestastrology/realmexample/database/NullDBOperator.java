@@ -39,6 +39,7 @@ enum NullDBOperator implements DBOperator {
         return null;
     }
     
+    @Override
     public void create(RealmObject realmObject){
         
     }

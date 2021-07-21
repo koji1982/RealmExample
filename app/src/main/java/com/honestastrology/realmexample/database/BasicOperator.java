@@ -1,13 +1,11 @@
 package com.honestastrology.realmexample.database;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.Iterator;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.mongodb.sync.SyncConfiguration;
 
 /**
  *
@@ -38,22 +36,31 @@ class BasicOperator implements DBOperator {
                                            _asyncDB : _syncDB;
     }
     
-    //In-MemoryでRealmインスタンスを作成する場合のコンストラクタ
-    BasicOperator(Context context,
-                  String  syncId,
-                  DBErrorCallback errorCallback){
+    //In-MemoryでcurrentにAsyncAccessorを入れる場合のコンストラクタ
+    BasicOperator(Context     context,
+                  Persistence persistence){
         Realm.init( context );
-//        _currentDBAccessor = new InMemoryDBAccessor();
-        _errorCallback     = errorCallback;
         
-//        _asyncDB = DBAccessor.getNullInstance();
-//        _syncDB  = DBAccessor.getNullInstance();
-        
-        _asyncDB = new AsyncAccessor( RealmConnectType.IN_MEMORY );
-        _syncDB  = new SyncAccessor(
-                        syncId, errorCallback, RealmConnectType.IN_MEMORY);
-        _currentDBAccessor = _syncDB;
+        _asyncDB = new AsyncAccessor( persistence );
+        _syncDB  = new SyncAccessor( persistence );
+        _currentDBAccessor = _asyncDB;
     }
+    
+    //In-MemoryでcurrentにSyncAccessorを入れる場合のコンストラクタ
+//    BasicOperator(Context context,
+//                  String  syncId,
+//                  DBErrorCallback errorCallback,
+//                  SyncConnectedCallback syncConnectedCallback){
+//        Realm.init( context );
+//        _errorCallback     = errorCallback;
+//        _asyncDB = new AsyncAccessor( Persistence.TEMPORARY );
+//        _syncDB  = new SyncAccessor(
+//                        syncId,
+//                errorCallback,
+//                Persistence.TEMPORARY,
+//                syncConnectedCallback);
+//        _currentDBAccessor = _syncDB;
+//    }
     
     @Override
     public boolean isNull(){

@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static com.honestastrology.realmexample.InstrumentTestHelper.createTestDocument;
-import static com.honestastrology.realmexample.InstrumentTestHelper.swapInMemoryOperator;
+import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
@@ -42,6 +40,7 @@ public class MainActivityInstrumentTest {
     @Test
     public void requestCREATECommand(){
         _scenarioRule.getScenario().onActivity( activity -> {
+            setupField( activity );
             assertNull( activity.findViewById( R.id.edit_page_layout ));
             assertNull( activity.getParts( PartsDefine.TITLE_TEXT ));
             assertNull( activity.getParts( PartsDefine.BODY_TEXT ));
@@ -63,6 +62,7 @@ public class MainActivityInstrumentTest {
     @Test
     public void requestREADCommand(){
         _scenarioRule.getScenario().onActivity( activity -> {
+            setupField( activity );
             //EditPageを開く
             activity.request( UIRequestCommand.CREATE );
             
