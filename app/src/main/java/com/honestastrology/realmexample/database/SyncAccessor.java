@@ -28,7 +28,7 @@ class SyncAccessor implements DBAccessor {
         Credentials credentials = Credentials.apiKey( TEST_API_KEY );
         
         App.Callback<User> callback = result -> {
-            if( result.isSuccess() ){
+            if( result.isSuccess() && app.currentUser() != null ){
                 setupRealm( app.currentUser() );
             } else {
                 _user      = null;
@@ -141,7 +141,7 @@ class SyncAccessor implements DBAccessor {
     @Override
     public void close(){
         if( _user != null ){
-            _user.logOut();
+            _user.logOutAsync( callback -> {} );
         }
         if( _syncRealm != null ){
             _syncRealm.close();
@@ -156,12 +156,22 @@ class SyncAccessor implements DBAccessor {
         return true;
     }
     
-    private void setupRealm(User user){
+    private void setConfig(User user){
         SyncConfiguration config = new SyncConfiguration
                                            .Builder( user, PARTITION_VAL_USER_DOC )
                                            .allowQueriesOnUiThread(true)
                                            .allowWritesOnUiThread(true)
                                            .build();
+        Realm.setDefaultConfiguration( config );
+    }
+    
+    private void setupRealm(User user){
+//        SyncConfiguration config = new SyncConfiguration
+//                                           .Builder( user, PARTITION_VAL_USER_DOC )
+//                                           .allowQueriesOnUiThread(true)
+//                                           .allowWritesOnUiThread(true)
+//                                           .build();
+        
         //In-Memory DBが使用中の場合等、Durabilityが変更されている場合は終了
 //        OsRealmConfig.Persistence syncDurability  = config.getDurability();
 //        OsRealmConfig.Persistence realmDurability = Realm.getDefaultConfiguration()
@@ -178,8 +188,16 @@ class SyncAccessor implements DBAccessor {
 //                exception.printStackTrace();
 //            }
 //        });
-        _syncRealm = Realm.getInstance( config );
+//        Realm.setDefaultConfiguration( config );
+        setConfig( user );
+        try {
+            _syncRealm = Realm.getDefaultInstance();
+        } catch (IllegalArgumentException e){
+            _syncRealm = null;
+            e.printStackTrace();
+        }
         _user      = user;
+//        _syncRealm = Realm.getInstance( config );
     }
     
     private void setupInMemoryRealm(User  user,

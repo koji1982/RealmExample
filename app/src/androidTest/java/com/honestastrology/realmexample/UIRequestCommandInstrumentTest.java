@@ -36,8 +36,8 @@ public class UIRequestCommandInstrumentTest {
     private boolean          _isInitialized = false;
     
     @Rule
-    public ActivityScenarioRule<InMemoryActivity> _scenarioRule
-            = new ActivityScenarioRule<>(InMemoryActivity.class);
+    public ActivityScenarioRule<MainActivity> _scenarioRule
+            = new ActivityScenarioRule<>(MainActivity.class);
     
     @Test
     public void executeCreateThrowsNull(){
@@ -124,7 +124,7 @@ public class UIRequestCommandInstrumentTest {
     }
     
     @Test
-    public void executeReadThrowsNull(){
+    public void executeReadArgNullThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
             assertThrows(
@@ -157,7 +157,6 @@ public class UIRequestCommandInstrumentTest {
     @Test
     public void executeRead(){
         _scenarioRule.getScenario().onActivity( activity -> {
-            CountDownLatch latch = new CountDownLatch( 1 );
             DBOperator.SyncConnectedCallback callback = () -> {
                 setupMultipleDocuments( _dbOperator );
                 Iterator<Document> preDBIterator = _dbOperator.readAll( Document.class );
@@ -182,17 +181,8 @@ public class UIRequestCommandInstrumentTest {
                             preDBIterator.next().getId(),
                             ((Document)adapter.getItem( i )).getId() );
                 }
-                latch.countDown();
             };
             setupSync( activity,callback );
-//            FutureTask<String> futureTask = new FutureTask<>(callback, "isDone");
-//            ExecutorService    executor   = Executors.newFixedThreadPool(2);
-//            executor.submit( futureTask );
-            try{
-                latch.await();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
         });
     }
     
@@ -261,7 +251,8 @@ public class UIRequestCommandInstrumentTest {
     
     private void setupSync(MainActivity activity, DBOperator.SyncConnectedCallback callback){
         if( !_isInitialized ){
-            _dbOperator = swapInMemorySyncOperator( activity, callback );
+            _dbOperator = swapInMemoryOperator( activity );
+            _dbOperator.toSync();
             _viewer     = new DocumentViewer( activity );
             _isInitialized = true;
         } else {

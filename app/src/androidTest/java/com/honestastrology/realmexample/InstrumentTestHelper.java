@@ -11,16 +11,25 @@ import java.util.List;
 public class InstrumentTestHelper {
     
     public static DBOperator swapInMemoryOperator(MainActivity activity){
-        DBOperator dbOperator = DBOperator.getInMemoryInstance(
+        try {
+            Field field_operator = activity.getClass().getDeclaredField("_dbOperator");
+            field_operator.setAccessible( true );
+            DBOperator dbOperator = (DBOperator)field_operator.get(activity);
+            dbOperator.closeAll();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        
+        DBOperator inMemoryOperator = DBOperator.getInMemoryInstance(
                                                 activity, Persistence.TEMPORARY);
         try {
             //dbOperatorをinMemoryに入れ替える
             Field field = activity.getClass().getDeclaredField("_dbOperator");
             field.setAccessible( true );
-            field.set(activity, dbOperator );
+            field.set(activity, inMemoryOperator );
         } catch (Exception e){
         }
-        return dbOperator;
+        return inMemoryOperator;
     }
     
 //    public static DBOperator swapInMemorySyncOperator(MainActivity activity,

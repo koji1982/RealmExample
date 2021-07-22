@@ -11,16 +11,10 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
-
-//        testApplicationId "com.honestastrology.realmexample"
+        
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testHandleProfiling true
-        testFunctionalTest true
     }
-//    sourceSets {
-//        androidTest.manifest.srcFile "src/androidTest/AndroidManifest.xml"
-//    }
+    
     buildTypes {
         release {
             minifyEnabled false
@@ -31,7 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-//    testBuildType "debug"
+    
     testOptions {
         unitTests.includeAndroidResources = true
         unitTests.returnDefaultValues = true

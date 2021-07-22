@@ -68,7 +68,6 @@ public class BackConfirmDialogInstrumentTest {
         });
     }
     
-    //ヘルパー関数
     private void setupField(MainActivity activity){
         if( _isInitialized ) return;
         _backConfirmDialog  = new BackConfirmDialog( activity );

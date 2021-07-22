@@ -28,8 +28,8 @@ class BasicOperator implements DBOperator {
                   DBErrorCallback errorCallback ){
         
         Realm.init( context );
-        _asyncDB   = DBAccessor.createAsync( asyncFileName );
         _syncDB    = DBAccessor.createSync( syncId, errorCallback );
+        _asyncDB   = DBAccessor.createAsync( asyncFileName );
         
         _errorCallback     = errorCallback;
         _currentDBAccessor = _syncDB.isNull() ?

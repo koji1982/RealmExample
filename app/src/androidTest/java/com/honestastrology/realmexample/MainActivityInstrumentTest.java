@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.honestastrology.realmexample.database.DBOperator;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,8 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static org.junit.Assert.*;
@@ -28,9 +31,27 @@ public class MainActivityInstrumentTest {
     public ActivityScenarioRule<MainActivity> _scenarioRule
             = new ActivityScenarioRule<>(MainActivity.class);
     
+//    @After
+//    public void waitDisconnect(){
+////        CountDownLatch latch = new CountDownLatch(1);
+////        try {
+////            latch.await(100000l, TimeUnit.SECONDS);
+////        } catch (Exception e){
+////            e.printStackTrace();
+////        }
+//        long startTime = System.currentTimeMillis();
+//        while( true ){
+//            if( _dbOperator.isNull() || 20000 < (System.currentTimeMillis() - startTime) ){
+//                break;
+//            }
+//        }
+//    }
+    
     @Test
     public void requestNullThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
+            setupField( activity );
+            
             assertThrows(NullPointerException.class, () -> {
                 activity.request( null );
             });
@@ -41,6 +62,7 @@ public class MainActivityInstrumentTest {
     public void requestCREATECommand(){
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
+            
             assertNull( activity.findViewById( R.id.edit_page_layout ));
             assertNull( activity.getParts( PartsDefine.TITLE_TEXT ));
             assertNull( activity.getParts( PartsDefine.BODY_TEXT ));
@@ -84,6 +106,8 @@ public class MainActivityInstrumentTest {
     @Test
     public void sendNullNullThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
+            setupField( activity );
+            
             assertThrows(NullPointerException.class, () -> {
                 activity.send( null, null );
             });
@@ -93,6 +117,8 @@ public class MainActivityInstrumentTest {
     @Test
     public void sendNullWithDocumentThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
+            setupField( activity );
+            
             assertThrows(NullPointerException.class, () -> {
                 activity.send( null, new Document() );
             });
@@ -102,6 +128,8 @@ public class MainActivityInstrumentTest {
     @Test
     public void sendUpdateWithNullThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
+            setupField( activity );
+            
             assertThrows(IllegalArgumentException.class, () -> {
                 activity.send( DBSendCommand.UPDATE, null );
             });
@@ -111,6 +139,8 @@ public class MainActivityInstrumentTest {
     @Test
     public void sendDeleteWithNullThrowsNull(){
         _scenarioRule.getScenario().onActivity( activity -> {
+            setupField( activity );
+            
             assertThrows(NullPointerException.class, () -> {
                 activity.send( DBSendCommand.DELETE, null );
             });
@@ -197,8 +227,8 @@ public class MainActivityInstrumentTest {
     
     //ヘルパー関数
     private void setupField(MainActivity activity){
-        if( _isInitialized ) return;
         _dbOperator    = swapInMemoryOperator( activity );
-        _isInitialized = true;
+//        if( _isInitialized ) return;
+//        _isInitialized = true;
     }
 }
