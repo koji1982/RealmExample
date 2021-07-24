@@ -46,22 +46,6 @@ class BasicOperator implements DBOperator {
         _currentDBAccessor = _asyncDB;
     }
     
-    //In-MemoryでcurrentにSyncAccessorを入れる場合のコンストラクタ
-//    BasicOperator(Context context,
-//                  String  syncId,
-//                  DBErrorCallback errorCallback,
-//                  SyncConnectedCallback syncConnectedCallback){
-//        Realm.init( context );
-//        _errorCallback     = errorCallback;
-//        _asyncDB = new AsyncAccessor( Persistence.TEMPORARY );
-//        _syncDB  = new SyncAccessor(
-//                        syncId,
-//                errorCallback,
-//                Persistence.TEMPORARY,
-//                syncConnectedCallback);
-//        _currentDBAccessor = _syncDB;
-//    }
-    
     @Override
     public boolean isNull(){
         return _currentDBAccessor.isNull();

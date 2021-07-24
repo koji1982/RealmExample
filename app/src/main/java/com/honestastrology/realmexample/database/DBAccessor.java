@@ -1,9 +1,5 @@
 package com.honestastrology.realmexample.database;
 
-import android.content.Context;
-
-import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
-
 import java.util.Iterator;
 
 import io.realm.RealmObject;

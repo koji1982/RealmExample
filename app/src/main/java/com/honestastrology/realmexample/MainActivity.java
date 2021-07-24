@@ -5,19 +5,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.honestastrology.realmexample.database.DBErrorCallback;
-import com.honestastrology.realmexample.ui.control.CommandControl;
-import com.honestastrology.realmexample.ui.control.SendCommand;
-import com.honestastrology.realmexample.ui.view.DisplayTextChanger;
-import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
-import com.honestastrology.realmexample.ui.view.LayoutType;
-import com.honestastrology.realmexample.ui.view.Parts;
-import com.honestastrology.realmexample.ui.view.Viewer;
-import com.honestastrology.realmexample.database.DBOperator;
-import com.honestastrology.realmexample.ui.control.RequestCommand;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.honestastrology.realmexample.database.*;
+import com.honestastrology.realmexample.ui.control.*;
+import com.honestastrology.realmexample.ui.view.*;
 
 /**
  * 起動時に呼ばれるクラス。DBOperator, Viewerを保持する。

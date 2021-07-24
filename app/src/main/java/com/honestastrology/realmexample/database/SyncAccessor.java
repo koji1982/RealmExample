@@ -1,7 +1,5 @@
 package com.honestastrology.realmexample.database;
 
-import android.content.Context;
-
 import java.util.Iterator;
 
 import io.realm.Realm;
@@ -41,38 +39,6 @@ class SyncAccessor implements DBAccessor {
         if ( isLoggedIn( app ) ) return;
         
         app.loginAsync( credentials, callback );
-    }
-    
-    SyncAccessor(String          syncId,
-                 DBErrorCallback errorCallback,
-                 Persistence     persistence,
-                 DBOperator.SyncConnectedCallback syncConnectedCallback){
-        if( persistence != Persistence.TEMPORARY ){
-            throw new IllegalArgumentException();
-        }
-        App inMemoryApp = new App( new AppConfiguration.Builder( syncId ).build());
-//        AppConfiguration appConfiguration = new AppConfiguration.Builder(syncId)
-//                                                    .appName(BuildConfig.VERSION_NAME)
-//                                                    .appVersion(Integer.toString(BuildConfig.VERSION_CODE))
-//                                                    .build();
-//        App inMemoryApp = new App( appConfiguration );
-        Credentials credentials = Credentials.anonymous();
-        App.Callback<User> callback = result -> {
-            if( result.isSuccess() ){
-                setupInMemoryRealm( inMemoryApp.currentUser(), syncConnectedCallback );
-            } else {
-                _user      = null;
-                _syncRealm = null;
-                errorCallback.onError( LOGIN_ERROR_MESSAGE );
-            }
-        };
-        
-//        User user = inMemoryApp.currentUser();
-//        if( user != null && user.isLoggedIn() ) {
-//            user.logOut();
-//        }
-        
-        inMemoryApp.loginAsync( credentials, callback);
     }
     
     //In-MemoryのDBとして使う場合のコンストラクタ
@@ -166,29 +132,6 @@ class SyncAccessor implements DBAccessor {
     }
     
     private void setupRealm(User user){
-//        SyncConfiguration config = new SyncConfiguration
-//                                           .Builder( user, PARTITION_VAL_USER_DOC )
-//                                           .allowQueriesOnUiThread(true)
-//                                           .allowWritesOnUiThread(true)
-//                                           .build();
-        
-        //In-Memory DBが使用中の場合等、Durabilityが変更されている場合は終了
-//        OsRealmConfig.Persistence syncDurability  = config.getDurability();
-//        OsRealmConfig.Persistence realmDurability = Realm.getDefaultConfiguration()
-//                                                           .getDurability();
-//        if( syncDurability != realmDurability ) return;
-//        Realm.getInstanceAsync( config, new Realm.Callback(){
-//            @Override
-//            public void onSuccess(Realm realm){
-//                _syncRealm = realm;
-//                _user = user;
-//            }
-//            @Override
-//            public void onError(Throwable exception){
-//                exception.printStackTrace();
-//            }
-//        });
-//        Realm.setDefaultConfiguration( config );
         setConfig( user );
         try {
             _syncRealm = Realm.getDefaultInstance();
@@ -197,51 +140,5 @@ class SyncAccessor implements DBAccessor {
             e.printStackTrace();
         }
         _user      = user;
-//        _syncRealm = Realm.getInstance( config );
-    }
-    
-    private void setupInMemoryRealm(User  user,
-                                    DBOperator.SyncConnectedCallback callback){
-//        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-//                                                 .inMemory()
-//                                                 .allowQueriesOnUiThread( true )
-//                                                 .allowWritesOnUiThread( true )
-//                                                 .build();
-        
-//        Realm.removeDefaultConfiguration();
-//        Realm.setDefaultConfiguration( realmConfig );
-        SyncConfiguration config = new SyncConfiguration
-                                           .Builder( user, "in_memory_document" )
-                                           .inMemory()
-                                           .allowQueriesOnUiThread(true)
-                                           .allowWritesOnUiThread(true)
-                                           .build();
-//        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-//                                                 .inMemory()
-//                                                 .allowQueriesOnUiThread( true )
-//                                                 .allowWritesOnUiThread( true )
-//                                                 .build();
-        Realm.setDefaultConfiguration( config );
-        
-        
-        Realm.getInstanceAsync( config, new Realm.Callback(){
-            @Override
-            public void onSuccess(Realm realm){
-                _syncRealm = realm;
-                callback.run();
-            }
-            @Override
-            public void onError(Throwable exception){
-                RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-                                                         .inMemory()
-                                                         .allowQueriesOnUiThread( true )
-                                                         .allowWritesOnUiThread( true )
-                                                         .build();
-                Realm.setDefaultConfiguration( realmConfig );
-                _syncRealm = Realm.getInstance( config );
-                callback.run();
-            }
-        });
-        _user = user;
     }
 }

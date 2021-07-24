@@ -1,8 +1,6 @@
 package com.honestastrology.realmexample;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.Button;
 
 import org.junit.Before;
 import org.junit.Test;

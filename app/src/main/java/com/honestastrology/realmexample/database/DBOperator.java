@@ -18,13 +18,6 @@ public interface DBOperator {
         return new BasicOperator(context, persistence);
     }
     
-//    public static DBOperator getInMemorySyncInstance(Context context,
-//                                                     String syncId,
-//                                                     DBErrorCallback errorCallback,
-//                                                     SyncConnectedCallback syncCallback){
-//        return new BasicOperator(context, syncId, errorCallback, syncCallback);
-//    }
-    
     public static DBOperator createBasicOperator(Context         context,
                                                  String          asyncFileName,
                                                  String          syncId,
