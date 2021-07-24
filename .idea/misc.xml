@@ -7,7 +7,7 @@
   </component>
   <component name="EntryPointsManager">
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="org.junit.BeforeClass" />
+      <item index="0" class="java.lang.String" itemvalue="org.junit.BeforeClass"/>
     </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">

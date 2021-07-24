@@ -6,6 +6,10 @@ import java.util.Iterator;
 
 import io.realm.RealmObject;
 
+/**
+ * パッケージ外から、databaseパッケージ関連の操作を行うためのインターフェース
+ * */
+
 public interface DBOperator {
     
     public static DBOperator getNullInstance(){

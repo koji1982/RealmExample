@@ -8,7 +8,7 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 
 /**
- *
+ *シンプルなデータベース操作(データの生成、読込、更新、削除)を行うクラス
  * */
 
 class BasicOperator implements DBOperator {

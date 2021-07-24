@@ -4,7 +4,11 @@ import java.util.Iterator;
 
 import io.realm.RealmObject;
 
-public interface DBAccessor {
+/**
+ * データベースへの入出力を行うためのインターフェース
+ * */
+
+interface DBAccessor {
     
     public static final String IN_MEMORY_FILE_NAME = "in_memory_async";
     

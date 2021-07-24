@@ -11,6 +11,13 @@ import io.realm.mongodb.Credentials;
 import io.realm.mongodb.User;
 import io.realm.mongodb.sync.SyncConfiguration;
 
+/**
+ * MongoDBにログイン、同期してリモートのDBアクセスを行うクラス
+ * In-Memoryで生成した場合は,リモートのDBが使えないため
+ * 端末のメモリを使用するAsyncAccessorクラスと同じ設定の
+ * Realmインスタンスを使用する
+ * */
+
 class SyncAccessor implements DBAccessor {
     
     private static final String PARTITION_VAL_USER_DOC = "user_document";
