@@ -10,6 +10,7 @@ import com.honestastrology.realmexample.ui.control.CommandControl;
 import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
 import com.honestastrology.realmexample.ui.view.Viewer;
 
+/** Document(RealmObject)を受け取り、表示、編集、保存を行うクラス */
 class EditPage {
     
     private final Viewer<Document> _viewer;

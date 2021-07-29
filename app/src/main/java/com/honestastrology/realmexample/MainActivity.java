@@ -21,18 +21,17 @@ import com.honestastrology.realmexample.ui.view.*;
  * Androidの仕様上、タッチイベント取得の他、
  * レイアウトの変更、テキスト表示、エラーメッセージ表示の機能等、
  * OS側が提供する機能の多くをActivityから行うことになっている為、
- * それらのコールバックインターフェースを実装している。
+ * それらを使用するためのコールバックインターフェースを実装している。
  * */
 public class MainActivity extends AppCompatActivity
                           implements CommandControl<Document>,
                                      LayoutSwitcher,
-                                     DisplayTextChanger,
+                                             LabelDisplay,
                                      DBErrorCallback {
     
     private DBOperator         _dbOperator;
     private Viewer<Document>   _viewer;
     
-    //LayoutSwitcherとして、currentのLayoutTypeを保持する
     private LayoutType         _currentLayoutType;
     
     @Override
@@ -73,9 +72,6 @@ public class MainActivity extends AppCompatActivity
         command.execute( _dbOperator, sendTarget );
     }
     
-    
-    
-    //「戻る」ボタンが押された時にOSから呼ばれる処理
     @Override
     public void onBackPressed(){
         if( _currentLayoutType.isEntryPage() ){
@@ -85,13 +81,11 @@ public class MainActivity extends AppCompatActivity
         UIRequestCommand.READ.execute( _viewer, _dbOperator );
     }
     
-    // 画面遷移のリクエストを受け取るコールバック
     @Override
     public void changeContentView(LayoutType newLayoutType){
         _currentLayoutType = newLayoutType;
         setContentView( newLayoutType.getResourceRef() );
     }
-    
     
     // 画面遷移時にレイアウト関連のインスタンスをxmlファイルから取り出すメソッド
     // Androidの仕様上、レイアウトxmlファイル読み込み（ setContentView() ）の後に
@@ -102,16 +96,15 @@ public class MainActivity extends AppCompatActivity
         return findViewById( targetParts.getResourceId() );
     }
     
-    //
     @Override
-    public void setConnectType(String newString){
+    public void updateLabel(String newString){
         setTitle( getString( R.string.app_name) + " (" + newString + ")" );
     }
     
     @Override
-    public void setSwitcherText(String newString){
-        Button connectSwitch = findViewById(R.id.sync_async_button);
-        connectSwitch.setText( newString );
+    public void updateButton(String newString){
+        Button connectSwitchButton = findViewById(R.id.sync_async_button);
+        connectSwitchButton.setText( newString );
     }
     
     @Override

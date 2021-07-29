@@ -2,6 +2,7 @@ package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.ui.view.LayoutType;
 
+/** Document(RealmObject)表示のレイアウトを定義する列挙型 */
 enum LayoutDefine implements LayoutType {
     
     TITLE_LIST( R.layout.entry_title_list, IS_ENTRY_PAGE     ),

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 
 import com.honestastrology.realmexample.ui.control.CommandControl;
 
+/** EditPageから抜ける時の確認時に表示するダイアログ */
 class BackConfirmDialog {
     
     private final AlertDialog              _confirmDialog;

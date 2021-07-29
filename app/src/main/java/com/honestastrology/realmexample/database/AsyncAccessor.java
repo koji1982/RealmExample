@@ -6,12 +6,10 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 
 /**
- * 端末の記憶領域を使用した非同期DBアクセスを行うクラス
- * In-Memoryで生成した場合、アプリ終了時にIn-Memoryで
- * 作成したデータは消去される
- * */
-
-class AsyncAccessor implements DBAccessor {
+ * 端末の記憶領域を使用した非同期DBアクセスを行うクラス。
+ * In-Memoryで生成した場合、In-Memory中に保存された記録は
+ * アプリ終了時に破棄される。　*/
+class AsyncAccessor implements RealmAccessor {
     
     private Realm _asyncRealm;
     

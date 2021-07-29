@@ -12,13 +12,12 @@ import io.realm.mongodb.User;
 import io.realm.mongodb.sync.SyncConfiguration;
 
 /**
- * MongoDBにログイン、同期してリモートのDBアクセスを行うクラス
+ * MongoDBにログイン、同期してリモートのDBアクセスを行うクラス。
  * In-Memoryで生成した場合は,リモートのDBが使えないため
  * 端末のメモリを使用するAsyncAccessorクラスと同じ設定の
- * Realmインスタンスを使用する
+ * Realmインスタンスをフィールドとして保持し使用する
  * */
-
-class SyncAccessor implements DBAccessor {
+class SyncAccessor implements RealmAccessor {
     
     private static final String PARTITION_VAL_USER_DOC = "user_document";
     private static final String TEST_API_KEY           = "vGBzTPrwZ3zT05qqwTaaK8vShDatOp5Wr2d4ZkngeXx5CjCJnUwkTVVToORhbzuL";
@@ -50,8 +49,7 @@ class SyncAccessor implements DBAccessor {
     
     //In-MemoryのDBとして使う場合のコンストラクタ
     //リモートのDBはIn-Memoryとしては使用できないため
-    //端末のメモリを使ったAsyncRealmを
-    //Realmインスタンスに代入して使用する
+    //端末のメモリを使ったAsyncRealmのインスタンスを代入して使用する
     SyncAccessor(Persistence persistence){
         if( persistence != Persistence.TEMPORARY ){
             throw new IllegalArgumentException();

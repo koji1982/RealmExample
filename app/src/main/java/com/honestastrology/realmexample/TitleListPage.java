@@ -10,13 +10,14 @@ import androidx.annotation.NonNull;
 import com.honestastrology.realmexample.ui.control.CommandControl;
 import com.honestastrology.realmexample.ui.view.LayoutSwitcher;
 import com.honestastrology.realmexample.ui.view.Viewer;
-import com.honestastrology.realmexample.ui.view.Page;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-class TitleListPage implements Page<Document> {
+/** Document(RealmObject)のタイトルリストを表示するためのクラス。
+ * タイトルリスト画面でのクリック処理もこのクラスで行う */
+class TitleListPage {
     
     private final Viewer<Document>         _viewer;
     private final LayoutSwitcher           _layoutSwitcher;
@@ -57,7 +58,8 @@ class TitleListPage implements Page<Document> {
                 = _layoutSwitcher.getParts( PartsDefine.TITLE_LIST );
         titleListView.setAdapter( _innerListAdapter );
         
-        //イベントリスナーをセットする
+        //リソースxml経由でレイアウトを変更した場合、それぞれのレイアウトパーツのインスタンスは
+        //新しく再生成されているため、イベントリスナーをセットする必要がある
         titleListView.setOnItemClickListener( new ListClickListener() );
         titleListView.setOnItemLongClickListener( new LongClickListener() );
         Button newNoteButton   = _layoutSwitcher.getParts( PartsDefine.NEW_NOTE_BUTTON );

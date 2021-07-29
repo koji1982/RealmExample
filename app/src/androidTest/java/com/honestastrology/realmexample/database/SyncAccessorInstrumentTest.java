@@ -4,28 +4,19 @@ import android.content.Context;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.honestastrology.realmexample.Document;
 import com.honestastrology.realmexample.MainActivity;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.mongodb.App;
-import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.Credentials;
-import io.realm.mongodb.User;
-import io.realm.mongodb.sync.SyncConfiguration;
 
 import static com.honestastrology.realmexample.database.DatabaseTestHelper.*;
 import static org.junit.Assert.*;
@@ -33,7 +24,7 @@ import static org.junit.Assert.*;
 //@RunWith(AndroidJUnit4.class)
 public class SyncAccessorInstrumentTest {
     
-    private DBAccessor     _syncAccessor;
+    private RealmAccessor _syncAccessor;
     private boolean        _isInitialized = false;
     private CountDownLatch _latch;
     

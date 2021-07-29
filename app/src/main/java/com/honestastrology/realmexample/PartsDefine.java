@@ -2,6 +2,8 @@ package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.ui.view.Parts;
 
+
+/** 定数(列挙型)として定義したui.view.Partsの実装クラス */
 enum PartsDefine implements Parts {
     
     TITLE_LIST       ( R.id.document_title_list),

@@ -1,11 +1,8 @@
 package com.honestastrology.realmexample.ui.view;
 
-/**
- * ActivityのsetContentView() を呼び出してレイアウトを変更する場合に
- * 使用するインターフェース
- * setContentView() で使用するリソースファイル参照値(int)を、
- * このインターフェースの実装クラスで対応させて指定する
- * */
+/** 画面遷移時にレイアウトタイプを指定するためのインターフェース。
+ *  起動ページか否かの真偽値と、リソースファイルの参照値を持たせることを
+ *  前提としている　*/
 public interface LayoutType {
     
     public static final boolean IS_ENTRY_PAGE     = true;

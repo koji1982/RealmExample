@@ -4,20 +4,17 @@ import java.util.Iterator;
 
 import io.realm.RealmObject;
 
-/**
- * データベースへの入出力を行うためのインターフェース
- * */
-
-interface DBAccessor {
+/** データベース(Realm)へのアクセスを行うインターフェース */
+interface RealmAccessor {
     
     public static final String IN_MEMORY_FILE_NAME = "in_memory_async";
     
-    public static DBAccessor createAsync(String asyncFileName){
+    public static RealmAccessor createAsync(String asyncFileName){
         return new AsyncAccessor( asyncFileName );
     }
     
-    public static DBAccessor createSync(String          syncId,
-                                        DBErrorCallback errorCallback){
+    public static RealmAccessor createSync(String          syncId,
+                                           DBErrorCallback errorCallback){
         return new SyncAccessor( syncId, errorCallback );
     }
     

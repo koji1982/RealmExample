@@ -7,16 +7,11 @@ import com.honestastrology.realmexample.ui.view.Viewer;
 
 import java.util.Iterator;
 
-/**
- * 
- */
-
+/** UIイベントから呼ばれる、DB・Viewerに対しての処理(引数なし)を定義した列挙型 */
 public enum UIRequestCommand implements RequestCommand<Document> {
-    /**
-     * Documentを新しく作成し、編集画面に切り替える
+    /** Documentを新しく作成し、編集画面に切り替えるコマンド。
      * 編集する際にRealmObjectとして登録されていなければならないため
-     * 画面を切り替える前に、生成したDocumentをデータベースに渡している
-     * */
+     * 画面を切り替える前に、生成したDocumentをデータベースに渡している。 */
     CREATE  {
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
@@ -33,9 +28,7 @@ public enum UIRequestCommand implements RequestCommand<Document> {
             viewer.show( managedDocument );
         }
     },
-    /**
-     * データベースから全てのDocumentを取得し表示するコマンド
-     * */
+    /** データベースから全てのDocumentを取得し表示するコマンド */
     READ   {
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){
@@ -45,9 +38,10 @@ public enum UIRequestCommand implements RequestCommand<Document> {
             }
             
             viewer.showList( documentIterator );
-            viewer.displayConnectString( dbOperator.getCurrentConnect() );
+            viewer.updateDisplayString( dbOperator.getCurrentConnect() );
         }
     },
+    /** データベースのSync/Asyncを切り替えるコマンド **/
     SWITCH_CONNECT {
         @Override
         public void execute(Viewer<Document> viewer, DBOperator dbOperator){

@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class TestScratch {
     
-//    private DBAccessor _syncAccessor;
+//    private RealmAccessor _syncAccessor;
     private Realm _realm;
     
     @Test

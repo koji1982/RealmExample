@@ -1,5 +1,6 @@
 package com.honestastrology.realmexample.database;
 
+/** RealmAccessorの接続タイプを表す列挙型 */
 public enum RealmConnectType implements ConnectType {
     SYNC( "Sync DB",   "to Async" ){
         @Override

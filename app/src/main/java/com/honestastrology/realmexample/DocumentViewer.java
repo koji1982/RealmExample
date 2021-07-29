@@ -1,27 +1,25 @@
 package com.honestastrology.realmexample;
 
 import com.honestastrology.realmexample.database.ConnectType;
-import com.honestastrology.realmexample.ui.view.DisplayTextChanger;
+import com.honestastrology.realmexample.ui.view.LabelDisplay;
 import com.honestastrology.realmexample.ui.view.Viewer;
 
 import java.util.Iterator;
 
-/**
- * 
- * */
+/** Document(RealmObject)扱うViewerの実装  */
 class DocumentViewer implements Viewer<Document>{
     
-    private final TitleListPage      _titleListPage;
-    private final EditPage           _editPage;
+    private final TitleListPage _titleListPage;
+    private final EditPage      _editPage;
     
-    private final DisplayTextChanger _displayTextChanger;
+    private final LabelDisplay  _labelDisplay;
     
     DocumentViewer(MainActivity mainActivity){
         //RealmObjectを保持するListを初期化
         _titleListPage = new TitleListPage(mainActivity, this);
         _editPage      = new EditPage(mainActivity, this);
-        //タイトル文字列等、画面表示を変更する場合のコールバック
-        _displayTextChanger = mainActivity;
+        //タイトル文字列等、画面表示
+        _labelDisplay = mainActivity;
     }
     
     @Override
@@ -35,8 +33,8 @@ class DocumentViewer implements Viewer<Document>{
     }
     
     @Override
-    public void displayConnectString(ConnectType connectType){
-        _displayTextChanger.setConnectType( connectType.getDisplayName() );
-        _displayTextChanger.setSwitcherText( connectType.getTargetName() );
+    public void updateDisplayString(ConnectType connectType){
+        _labelDisplay.updateLabel( connectType.getDisplayName() );
+        _labelDisplay.updateButton( connectType.getTargetName() );
     }
 }

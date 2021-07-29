@@ -140,7 +140,7 @@ public class DocumentViewerTest {
         assertNotEquals( testTargetType.getTargetName(), preButtonText );
         
         //テスト対象メソッド
-        _viewer.displayConnectString( testTargetType );
+        _viewer.updateDisplayString( testTargetType );
         
         //表示がtargetと同じに変更されていることを確認
         String actualTitle      = _mainActivity.getTitle().toString();

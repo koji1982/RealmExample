@@ -7,19 +7,16 @@ import java.util.Iterator;
 import io.realm.Realm;
 import io.realm.RealmObject;
 
-/**
- *シンプルなデータベース操作(データの生成、読込、更新、削除)を行うクラス
- * */
-
+/** シンプルなデータベース操作(データの生成、読込、更新、削除)を行うクラス */
 class BasicOperator implements DBOperator {
     
     private static final String SYNC_ERROR_MESSAGE  = "SYNC DB is not available.";
     private static final String ASYNC_ERROR_MESSAGE = "ASYNC DB is not available.";
     
-    private DBAccessor        _asyncDB;
-    private DBAccessor        _syncDB;
+    private RealmAccessor _asyncDB;
+    private RealmAccessor _syncDB;
     
-    private DBAccessor        _currentDBAccessor;
+    private RealmAccessor _currentRealmAccessor;
     private DBErrorCallback   _errorCallback;
     
     BasicOperator(Context         context,
@@ -28,11 +25,11 @@ class BasicOperator implements DBOperator {
                   DBErrorCallback errorCallback ){
         
         Realm.init( context );
-        _syncDB    = DBAccessor.createSync( syncId, errorCallback );
-        _asyncDB   = DBAccessor.createAsync( asyncFileName );
+        _syncDB    = RealmAccessor.createSync( syncId, errorCallback );
+        _asyncDB   = RealmAccessor.createAsync( asyncFileName );
         
         _errorCallback     = errorCallback;
-        _currentDBAccessor = _syncDB.isNull() ?
+        _currentRealmAccessor = _syncDB.isNull() ?
                                            _asyncDB : _syncDB;
     }
     
@@ -43,17 +40,17 @@ class BasicOperator implements DBOperator {
         
         _asyncDB = new AsyncAccessor( persistence );
         _syncDB  = new SyncAccessor( persistence );
-        _currentDBAccessor = _asyncDB;
+        _currentRealmAccessor = _asyncDB;
     }
     
     @Override
     public boolean isNull(){
-        return _currentDBAccessor.isNull();
+        return _currentRealmAccessor.isNull();
     }
     
     @Override
     public ConnectType getCurrentConnect(){
-        return _currentDBAccessor.getConnectType();
+        return _currentRealmAccessor.getConnectType();
     }
     
     @Override
@@ -62,7 +59,7 @@ class BasicOperator implements DBOperator {
             _errorCallback.onError( SYNC_ERROR_MESSAGE );
             return;
         }
-        _currentDBAccessor = _syncDB;
+        _currentRealmAccessor = _syncDB;
     }
     
     @Override
@@ -71,7 +68,7 @@ class BasicOperator implements DBOperator {
             _errorCallback.onError( ASYNC_ERROR_MESSAGE );
             return;
         }
-        _currentDBAccessor = _asyncDB;
+        _currentRealmAccessor = _asyncDB;
     }
     
     @Override
@@ -83,34 +80,34 @@ class BasicOperator implements DBOperator {
     @Override
     public <E extends RealmObject>
     Number getMaxPrimaryNumber(Class<E> clazz, String primaryKeyField){
-        return _currentDBAccessor.getMaxPrimaryNumber(clazz, primaryKeyField);
+        return _currentRealmAccessor.getMaxPrimaryNumber(clazz, primaryKeyField);
     }
     
     @Override
     public void create(RealmObject realmObject){
-        _currentDBAccessor.create(realmObject);
+        _currentRealmAccessor.create(realmObject);
     }
     
     @Override
     public <E extends RealmObject> E getRealmObject(Class<E> clazz,
                                                     String   fieldName,
                                                     int      id){
-        return _currentDBAccessor.getRealmObject(clazz, fieldName, id);
+        return _currentRealmAccessor.getRealmObject(clazz, fieldName, id);
     }
     
     @Override
     public <E extends RealmObject> Iterator<E> readAll(Class<E> clazz){
-        return _currentDBAccessor.readAll(clazz);
+        return _currentRealmAccessor.readAll(clazz);
     }
     
     @Override
     public void update(RealmObject realmObject){
-        _currentDBAccessor.update(realmObject);
+        _currentRealmAccessor.update(realmObject);
     }
     
     @Override
     public void delete(RealmObject realmObject){
-        _currentDBAccessor.delete(realmObject);
+        _currentRealmAccessor.delete(realmObject);
     }
     
 }

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
+/** RealmExampleでの唯一のRealmObject */
 public class Document extends RealmObject {
     
     public static final String PRIMARY_KEY    = "_id";

@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 
 import com.honestastrology.realmexample.ui.control.CommandControl;
 
+/** Document削除時に呼ばれるダイアログ。
+ * ダイアログ表示中Deleteボタンをタッチした時に削除Commandを送信する */
 class DeleteDialog {
     
     private final AlertDialog              _decisionDialog;

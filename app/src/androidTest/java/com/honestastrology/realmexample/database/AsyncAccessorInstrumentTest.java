@@ -2,32 +2,26 @@ package com.honestastrology.realmexample.database;
 
 import android.content.Context;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.honestastrology.realmexample.Document;
-import com.honestastrology.realmexample.MainActivity;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.Iterator;
 import java.util.List;
 
 import io.realm.Realm;
 
-import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static com.honestastrology.realmexample.database.DatabaseTestHelper.*;
 import static org.junit.Assert.*;
 
 //@RunWith(AndroidJUnit4.class)
 public class AsyncAccessorInstrumentTest {
     
-    private DBAccessor _asyncAccessor;
+    private RealmAccessor _asyncAccessor;
     private boolean    _isInitialized = false;
     
 //    @Rule

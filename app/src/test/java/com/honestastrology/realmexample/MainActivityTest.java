@@ -114,7 +114,7 @@ public class MainActivityTest {
     
     @Test
     public void changeTitleNullable(){
-        _activity.setConnectType( null );
+        _activity.updateLabel( null );
         assertNotNull( _activity.getTitle() );
     }
     
@@ -124,7 +124,7 @@ public class MainActivityTest {
         //変更前に文字列を含んでいないことを確認
         assertFalse( activityTitleContains( insertStr ) );
         //テスト対象のメソッド
-        _activity.setConnectType( insertStr );
+        _activity.updateLabel( insertStr );
         //変更後に文字列を含んでいることを確認
         assertTrue( activityTitleContains( insertStr ));
     }

@@ -3,31 +3,27 @@ package com.honestastrology.realmexample.database;
 import android.content.Context;
 
 import com.honestastrology.realmexample.Document;
-import com.honestastrology.realmexample.MainActivity;
-import com.honestastrology.realmexample.R;
-import com.honestastrology.realmexample.UIRequestCommand;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseTestHelper {
     
-    public static DBAccessor extractAsyncAccessor(Context context){
+    public static RealmAccessor extractAsyncAccessor(Context context){
         BasicOperator operator = (BasicOperator)DBOperator.getInMemoryInstance(
                                             context, Persistence.TEMPORARY);
         try {
             Field field_accessor = operator.getClass().getDeclaredField("_asyncDB");
             field_accessor.setAccessible( true );
-            return (DBAccessor)field_accessor.get(operator);
+            return (RealmAccessor)field_accessor.get(operator);
         } catch (Exception e){
             
         }
         return null;
     }
     
-    public static DBAccessor extractSyncAccessor(Context context){
+    public static RealmAccessor extractSyncAccessor(Context context){
 //        try{
 //            Field field = activity.getClass().getDeclaredField("_dbOperator");
 //            field.setAccessible( true );
@@ -41,14 +37,14 @@ public class DatabaseTestHelper {
         try {
             Field field_accessor = operator.getClass().getDeclaredField("_syncDB");
             field_accessor.setAccessible( true );
-            return (DBAccessor)field_accessor.get(operator);
+            return (RealmAccessor)field_accessor.get(operator);
         } catch (Exception e){
         
         }
         return null;
     }
     
-    public static Document createTestDocument(DBAccessor accessor){
+    public static Document createTestDocument(RealmAccessor accessor){
         int newId = 0;
         Number maxPrimaryNumber = accessor.getMaxPrimaryNumber(
                 Document.class, Document.PRIMARY_KEY );
@@ -66,12 +62,12 @@ public class DatabaseTestHelper {
                 newId );
     }
     
-    public static Document createUnmanagedDocument(DBAccessor accessor){
+    public static Document createUnmanagedDocument(RealmAccessor accessor){
         Document document = createTestDocument( accessor );
         return document.getRealm().copyFromRealm( document );
     }
     
-    public static List<Document> setupMultipleDocuments(DBAccessor accessor){
+    public static List<Document> setupMultipleDocuments(RealmAccessor accessor){
         List<Document> idList = new ArrayList<>();
         for( int i=0; i<5; i++){
             Document createdDocument = createTestDocument( accessor );

@@ -5,14 +5,10 @@ import com.honestastrology.realmexample.ui.view.Viewer;
 
 import io.realm.RealmObject;
 
-/**
- * このインターフェースを実装したクラスが
- * DBOperatorへリクエストを送り、
- * 返される結果をViewerへ反映させることを想定している
- */
-
+/** CommandControlへ渡されてそこで実行される操作コマンド。
+ * 実装クラスではDBOperatorとViewerへの処理を記述する */
 public interface RequestCommand<E extends RealmObject> {
-    /** ボタン押下等リクエストの実行メソッド*/
+    
     public void execute(Viewer<E> viewer, DBOperator _dbOperator);
     
 }
