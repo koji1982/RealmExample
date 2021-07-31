@@ -7,4 +7,4 @@
     android:hint="@string/no_title"
     android:textSize="@dimen/title_size"
     android:textColor="@color/dark_gray"
-    android:paddingVertical="@dimen/list_title_padding"/>
+    android:paddingVertical="@dimen/list_title_padding" />

@@ -4,5 +4,5 @@
     android:shape="oval">
     <size
         android:width="@dimen/ring_button_width"
-        android:height="@dimen/ring_button_height"/>
+        android:height="@dimen/ring_button_height" />
 </shape>

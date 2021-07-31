@@ -6,7 +6,9 @@ import com.honestastrology.realmexample.ui.view.Viewer;
 
 import java.util.Iterator;
 
-/** Document(RealmObject)扱うViewerの実装  */
+/** Document(RealmObject)扱うViewerの実装クラス。
+ * Documentのタイトルリスト画面と、Documentの編集画面を
+ * 表示する*/
 class DocumentViewer implements Viewer<Document>{
     
     private final TitleListPage _titleListPage;

@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">RealmExample</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="async_file_name">realm_example_async</string>
     <string name="sync_id">realmexample-puwav</string>
     <string name="new_button">New Note</string>
