@@ -61,4 +61,5 @@ public enum UIRequestCommand implements RequestCommand<Document> {
         }
         return maxPrimaryNumber.intValue() + Document.NEXT_ID_STRIDE;
     }
+    
 }

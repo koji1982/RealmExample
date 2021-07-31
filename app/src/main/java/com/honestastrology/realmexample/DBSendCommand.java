@@ -24,5 +24,4 @@ enum DBSendCommand implements SendCommand<Document> {
             dbOperator.delete( targetDocument );
         }
     };
-    
 }

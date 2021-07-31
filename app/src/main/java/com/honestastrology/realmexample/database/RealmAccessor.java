@@ -38,5 +38,4 @@ interface RealmAccessor {
     public void delete(RealmObject realmObject);
     
     public void close();
-    
 }

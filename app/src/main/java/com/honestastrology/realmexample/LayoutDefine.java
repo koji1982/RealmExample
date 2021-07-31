@@ -25,4 +25,5 @@ enum LayoutDefine implements LayoutType {
         _resourceFileRef = resourceFileRef;
         _isEntryPage     = isEntryPage;
     }
+    
 }

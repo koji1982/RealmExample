@@ -65,5 +65,4 @@ public class Document extends RealmObject {
             this._text = text;
         }
     }
-    
 }

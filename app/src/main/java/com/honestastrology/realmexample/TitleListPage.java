@@ -105,4 +105,5 @@ class TitleListPage {
             _commandControl.request( UIRequestCommand.SWITCH_CONNECT );
         }
     }
+    
 }

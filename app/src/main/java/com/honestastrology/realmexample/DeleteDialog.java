@@ -45,5 +45,4 @@ class DeleteDialog {
             _deleteTarget = null;
         }
     }
-    
 }

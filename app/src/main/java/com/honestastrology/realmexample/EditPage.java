@@ -89,5 +89,4 @@ class EditPage {
             _commandControl.request( UIRequestCommand.READ );
         }
     }
-    
 }

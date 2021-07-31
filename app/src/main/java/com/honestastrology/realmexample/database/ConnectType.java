@@ -8,5 +8,4 @@ public interface ConnectType {
     public String getTargetName();
     
     public void switches(DBOperator dbOperator);
-    
 }

@@ -146,4 +146,5 @@ class SyncAccessor implements RealmAccessor {
         }
         _user      = user;
     }
+    
 }

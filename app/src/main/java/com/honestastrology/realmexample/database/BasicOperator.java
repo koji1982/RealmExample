@@ -109,5 +109,4 @@ class BasicOperator implements DBOperator {
     public void delete(RealmObject realmObject){
         _currentRealmAccessor.delete(realmObject);
     }
-    
 }

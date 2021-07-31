@@ -24,4 +24,5 @@ enum PartsDefine implements Parts {
     PartsDefine(int resourceId){
         _resourceId = resourceId;
     }
+    
 }

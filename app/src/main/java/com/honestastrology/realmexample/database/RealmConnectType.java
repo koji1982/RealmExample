@@ -37,4 +37,5 @@ public enum RealmConnectType implements ConnectType {
         _displayName  = name;
         _switchTarget = displayString;
     }
+    
 }

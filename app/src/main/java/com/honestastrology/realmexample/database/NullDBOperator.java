@@ -68,5 +68,4 @@ enum NullDBOperator implements DBOperator {
     public void closeAll(){
         
     }
-    
 }

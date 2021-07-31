@@ -85,5 +85,4 @@ class AsyncAccessor implements RealmAccessor {
     public void close(){
         _asyncRealm.close();
     }
-    
 }

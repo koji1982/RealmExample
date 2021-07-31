@@ -39,4 +39,5 @@ class DocumentViewer implements Viewer<Document>{
         _labelDisplay.updateLabel( connectType.getDisplayName() );
         _labelDisplay.updateButton( connectType.getTargetName() );
     }
+    
 }
