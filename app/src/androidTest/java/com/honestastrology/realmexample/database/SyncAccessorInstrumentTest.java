@@ -2,11 +2,9 @@ package com.honestastrology.realmexample.database;
 
 import android.content.Context;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.honestastrology.realmexample.Document;
-import com.honestastrology.realmexample.MainActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,16 +19,10 @@ import io.realm.Realm;
 import static com.honestastrology.realmexample.database.DatabaseTestHelper.*;
 import static org.junit.Assert.*;
 
-//@RunWith(AndroidJUnit4.class)
 public class SyncAccessorInstrumentTest {
     
     private RealmAccessor _syncAccessor;
     private boolean        _isInitialized = false;
-    private CountDownLatch _latch;
-    
-//    @Rule
-    public ActivityScenarioRule<MainActivity> _scenarioRule;
-//            = new ActivityScenarioRule<>(MainActivity.class);
     
     @Before
     public void setup(){
@@ -46,28 +38,17 @@ public class SyncAccessorInstrumentTest {
     
     @Test
     public void isNullNormallyFalse() {
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            });
-//        });
         assertFalse( _syncAccessor.isNull() );
     }
     
     @Test
     public void getMaxPrimaryNumberFirstReturnsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            });
             assertNull( _syncAccessor.getMaxPrimaryNumber(
                     Document.class, Document.PRIMARY_KEY ));
     }
     
     @Test
     public void getMaxPrimaryNumberGain(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            });
-//        });
         _syncAccessor.create( new Document() );
         //テスト対象
         int firstId = _syncAccessor.getMaxPrimaryNumber(
@@ -90,20 +71,12 @@ public class SyncAccessorInstrumentTest {
     
     @Test
     public void createArgNullThrowsIllegalArg(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//        });
         assertThrows( IllegalArgumentException.class,
                 () -> _syncAccessor.create( null ) );
     }
     
     @Test
     public void createDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//        });
         Document document = new Document();
     
         //テスト対象
@@ -116,10 +89,6 @@ public class SyncAccessorInstrumentTest {
     
     @Test
     public void getRealmObjectWithId(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//        });
         Document createdDocument = createTestDocument( _syncAccessor );
     
         //テスト対象
@@ -131,21 +100,12 @@ public class SyncAccessorInstrumentTest {
     
     @Test
     public void readAllNullThrowsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//        });
         assertThrows( NullPointerException.class,
                 () -> _syncAccessor.readAll( null ));
     }
     
     @Test
     public void readAllDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//    
-//        });
         List<Document> createdList = setupMultipleDocuments( _syncAccessor );
     
         //テスト対象
@@ -159,20 +119,12 @@ public class SyncAccessorInstrumentTest {
     
     @Test
     public void updateNullThrowsIllegalArg(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//        });
         assertThrows( IllegalArgumentException.class,
                 ()-> _syncAccessor.update( null ));
     }
     
     @Test
     public void updateDocument(){
-//        _scenarioRule.getScenario().onActivity( activity ->{
-//            setupField( activity, () -> {
-//            } );
-//        });
         Document document = createUnmanagedDocument( _syncAccessor );
         String updatedTitle = "updated title";
         String updatedBody  = "updated body";
@@ -196,20 +148,12 @@ public class SyncAccessorInstrumentTest {
     
     @Test
     public void deleteNullThrowsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//        });
         assertThrows( NullPointerException.class,
                 () -> _syncAccessor.delete( null ));
     }
     
     @Test
     public void deleteDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity, () -> {
-//            } );
-//        });
         Document targetDocument = createTestDocument( _syncAccessor );
         int      targetId       = targetDocument.getId();
         Document preTargetFromDB = _syncAccessor.getRealmObject(
@@ -224,23 +168,4 @@ public class SyncAccessorInstrumentTest {
         assertNull( postTargetFromDB );
     }
     
-    //ヘルパー関数
-    private void setupField(MainActivity activity,
-                            DBOperator.SyncConnectedCallback callback){
-        _latch = new CountDownLatch( 1 ) ;
-        if( !_isInitialized ) {
-            _syncAccessor = extractSyncAccessor( activity );
-            _isInitialized = true;
-        } else {
-            callback.run();
-        }
-    }
-    
-    private void awaitCallback(){
-        try {
-            _latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -24,14 +24,6 @@ public class DatabaseTestHelper {
     }
     
     public static RealmAccessor extractSyncAccessor(Context context){
-//        try{
-//            Field field = activity.getClass().getDeclaredField("_dbOperator");
-//            field.setAccessible( true );
-//            DBOperator operator = (DBOperator)field.get(activity);
-//            operator.closeAll();
-//        } catch (Exception e){
-//            
-//        }
         DBOperator operator = DBOperator.getInMemoryInstance(
                                             context, Persistence.TEMPORARY);
         try {
@@ -45,7 +37,7 @@ public class DatabaseTestHelper {
     }
     
     public static Document createTestDocument(RealmAccessor accessor){
-        int newId = 0;
+        int newId;
         Number maxPrimaryNumber = accessor.getMaxPrimaryNumber(
                 Document.class, Document.PRIMARY_KEY );
         if( maxPrimaryNumber == null ){

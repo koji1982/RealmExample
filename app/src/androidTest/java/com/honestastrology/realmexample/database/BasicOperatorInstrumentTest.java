@@ -2,19 +2,13 @@ package com.honestastrology.realmexample.database;
 
 import android.content.Context;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.honestastrology.realmexample.Document;
-import com.honestastrology.realmexample.MainActivity;
-import com.honestastrology.realmexample.UIRequestCommand;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,15 +16,10 @@ import java.util.List;
 import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static org.junit.Assert.*;
 
-//@RunWith(AndroidJUnit4.class)
 public class BasicOperatorInstrumentTest {
     
     private DBOperator _dbOperator;
     private boolean    _isInitialized = false;
-    
-//    @Rule
-//    public ActivityScenarioRule<MainActivity> _scenarioRule
-//            = new ActivityScenarioRule<>(MainActivity.class);
     
     @Before
     public void setup(){
@@ -51,28 +40,17 @@ public class BasicOperatorInstrumentTest {
     //またSyncの接続が確立されていない場合もisNullとなる
     @Test
     public void isNullFalseNormally(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//    
-//        });
         assertFalse( _dbOperator.isNull() );
     }
     
     @Test
     public void getMaxPrimaryNumberFirstReturnsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertNull( _dbOperator.getMaxPrimaryNumber(
                 Document.class, Document.PRIMARY_KEY ));
     }
     
     @Test
     public void getMaxPrimaryNumberGain(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         createTestDocument( _dbOperator );
         //テスト対象
         int firstId = _dbOperator.getMaxPrimaryNumber(
@@ -93,19 +71,12 @@ public class BasicOperatorInstrumentTest {
     
     @Test
     public void createArgNullThrowsIllegalArg(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertThrows( IllegalArgumentException.class,
                 () -> _dbOperator.create( null ) );
     }
     
     @Test
     public void createDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         Document document = new Document();
     
         //テスト対象
@@ -118,9 +89,6 @@ public class BasicOperatorInstrumentTest {
     
     @Test
     public void getRealmObjectWithId(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         Document createdDocument = createTestDocument( _dbOperator );
     
         //テスト対象
@@ -132,19 +100,12 @@ public class BasicOperatorInstrumentTest {
     
     @Test
     public void readAllNullThrowsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertThrows( NullPointerException.class,
                 () -> _dbOperator.readAll( null ));
     }
     
     @Test
     public void readAllDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         List<Document> createdList = setupMultipleDocuments(_dbOperator);
     
         //テスト対象
@@ -158,19 +119,12 @@ public class BasicOperatorInstrumentTest {
     
     @Test
     public void updateNullThrowsIllegalArg(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertThrows( IllegalArgumentException.class,
                 ()-> _dbOperator.update( null ));
     }
     
     @Test
     public void updateDocument(){
-//        _scenarioRule.getScenario().onActivity( activity ->{
-//            setupField( activity );
-//        });
         Document document = createUnmanagedDocument( _dbOperator );
         String updatedTitle = "updated title";
         String updatedBody  = "updated body";
@@ -194,19 +148,12 @@ public class BasicOperatorInstrumentTest {
     
     @Test
     public void deleteNullThrowsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertThrows( NullPointerException.class,
                 () -> _dbOperator.delete( null ));
     }
     
     @Test
     public void deleteDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         Document targetDocument = createTestDocument( _dbOperator );
         int      targetId       = targetDocument.getId();
         Document preTargetFromDB = _dbOperator.getRealmObject(
@@ -219,12 +166,5 @@ public class BasicOperatorInstrumentTest {
         Document postTargetFromDB = _dbOperator.getRealmObject(
                 Document.class, Document.PRIMARY_KEY, targetId );
         assertNull( postTargetFromDB );
-    }
-    
-    //ヘルパー関数
-    private void setupField(MainActivity activity){
-        if( _isInitialized ) return;
-        _dbOperator = swapInMemoryOperator( activity );
-        _isInitialized = true;
     }
 }

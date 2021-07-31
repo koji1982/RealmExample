@@ -137,7 +137,6 @@ public class MainActivityTest {
                     _activity.onError(null);} );
     }
     
-    //ヘルパー関数
     private boolean activityTitleContains(String str){
         return _activity.getTitle()
                        .toString()

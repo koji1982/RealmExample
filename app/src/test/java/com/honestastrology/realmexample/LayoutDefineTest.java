@@ -15,5 +15,4 @@ public class LayoutDefineTest {
     public void editorIsNotEntryPage(){
         assertFalse( LayoutDefine.EDITOR.isEntryPage() );
     }
-    
 }

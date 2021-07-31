@@ -60,7 +60,6 @@ public class DeleteDialogTest {
                       .callOnClick();
     }
     
-    //ヘルパー関数
     private AlertDialog getDecisionDialog(){
         try{
             Field field_dialog = _deleteDialog.getClass()
@@ -83,4 +82,5 @@ public class DeleteDialogTest {
         }
         return null;
     }
+    
 }

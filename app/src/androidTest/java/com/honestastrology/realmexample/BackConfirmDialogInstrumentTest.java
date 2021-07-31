@@ -6,22 +6,18 @@ import android.content.DialogInterface;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.honestastrology.realmexample.database.DBOperator;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Field;
 
-import static com.honestastrology.realmexample.InstrumentTestHelper.swapInMemoryOperator;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class BackConfirmDialogInstrumentTest {
     
     private BackConfirmDialog _backConfirmDialog;
-    private DBOperator        _dbOperator;
     private boolean           _isInitialized = false;
     
     @Rule
@@ -71,7 +67,6 @@ public class BackConfirmDialogInstrumentTest {
     private void setupField(MainActivity activity){
         if( _isInitialized ) return;
         _backConfirmDialog  = new BackConfirmDialog( activity );
-        _dbOperator         = swapInMemoryOperator( activity );
         _isInitialized      = true;
     }
     

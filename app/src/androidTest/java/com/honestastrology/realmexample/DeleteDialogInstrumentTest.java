@@ -1,7 +1,6 @@
 package com.honestastrology.realmexample;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.widget.Button;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -15,9 +14,6 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.Field;
 
-import static androidx.test.espresso.Espresso.*;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -60,7 +56,6 @@ public class DeleteDialogInstrumentTest {
         });
     }
     
-    //ヘルパー関数
     private void setupField(MainActivity activity){
         if( _isInitialized ) return;
         _deleteDialog  = new DeleteDialog( activity );

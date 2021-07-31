@@ -18,15 +18,10 @@ import io.realm.Realm;
 import static com.honestastrology.realmexample.database.DatabaseTestHelper.*;
 import static org.junit.Assert.*;
 
-//@RunWith(AndroidJUnit4.class)
 public class AsyncAccessorInstrumentTest {
     
     private RealmAccessor _asyncAccessor;
     private boolean    _isInitialized = false;
-    
-//    @Rule
-//    public ActivityScenarioRule<MainActivity> _scenarioRule
-//            = new ActivityScenarioRule<>(MainActivity.class);
     
     @Before
     public void setup(){
@@ -42,20 +37,11 @@ public class AsyncAccessorInstrumentTest {
     
     @Test
     public void isNullNormallyFalse(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//            assertFalse( _asyncAccessor.isNull() );
-//        });
         assertFalse( _asyncAccessor.isNull() );
     }
     
     @Test
     public void getMaxPrimaryNumberFirstReturnsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        
-//        });
         //最初のDocument作成時の挙動確認のためsetupから開始する
         
         assertNull( _asyncAccessor.getMaxPrimaryNumber(
@@ -64,9 +50,6 @@ public class AsyncAccessorInstrumentTest {
     
     @Test
     public void getMaxPrimaryNumberGain(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         _asyncAccessor.create( new Document() );
         //テスト対象
         int firstId = _asyncAccessor.getMaxPrimaryNumber(
@@ -89,19 +72,12 @@ public class AsyncAccessorInstrumentTest {
     
     @Test
     public void createArgNullThrowsIllegalArg(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertThrows( IllegalArgumentException.class,
                 () -> _asyncAccessor.create( null ) );
     }
     
     @Test
     public void createDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         Document document = createTestDocument( _asyncAccessor );
         
         //テスト対象
@@ -114,9 +90,6 @@ public class AsyncAccessorInstrumentTest {
     
     @Test
     public void getRealmObjectWithId(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         Document createdDocument = createTestDocument( _asyncAccessor );
     
         //テスト対象
@@ -128,19 +101,12 @@ public class AsyncAccessorInstrumentTest {
     
     @Test
     public void readAllNullThrowsNull(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertThrows( NullPointerException.class,
                 () -> _asyncAccessor.readAll( null ));
     }
     
     @Test
     public void readAllDocument(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//        });
         //作成されたオブジェクトとreadAllで取得するオブジェクト
         //を比較するため初期化から始める
 //        setupField();
@@ -161,19 +127,12 @@ public class AsyncAccessorInstrumentTest {
     
     @Test
     public void updateNullThrowsIllegalArg(){
-//        _scenarioRule.getScenario().onActivity( activity -> {
-//            setupField( activity );
-//            
-//        });
         assertThrows( IllegalArgumentException.class,
                 ()-> _asyncAccessor.update( null ));
     }
     
     @Test
     public void updateDocument(){
-//        _scenarioRule.getScenario().onActivity( activity ->{
-//            setupField( activity );
-//        });
         Document document = createUnmanagedDocument( _asyncAccessor );
         String updatedTitle = "updated title";
         String updatedBody  = "updated body";

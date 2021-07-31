@@ -62,5 +62,4 @@ public class EditPageTest {
         onView( withId( R.id.body_text ))
                 .check( matches( isDisplayed() ));
     }
-    
 }

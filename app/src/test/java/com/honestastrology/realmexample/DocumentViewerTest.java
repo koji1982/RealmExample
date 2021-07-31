@@ -149,4 +149,5 @@ public class DocumentViewerTest {
         assertTrue( actualTitle.contains( testTargetType.getDisplayName() ));
         assertEquals( testTargetType.getTargetName(), actualButtonText );
     }
+    
 }

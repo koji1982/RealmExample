@@ -8,4 +8,5 @@ class NullDBActivity extends MainActivity {
     protected DBOperator createDBOperator(){
         return DBOperator.getNullInstance();
     }
+    
 }

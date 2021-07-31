@@ -19,10 +19,6 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 import static com.honestastrology.realmexample.InstrumentTestHelper.*;
 import static com.honestastrology.realmexample.UIRequestCommand.*;
@@ -239,9 +235,6 @@ public class UIRequestCommandInstrumentTest {
         });
     }
     
-    
-    
-    //ヘルパー関数
     private void setupField(MainActivity activity){
         if( _isInitialized ) return;
         _dbOperator = swapInMemoryOperator( activity );
@@ -260,7 +253,6 @@ public class UIRequestCommandInstrumentTest {
         }
     }
     
-    //ヘルパー関数
     public static int getNewId(DBOperator dbOperator){
         try {
             Method method = UIRequestCommand.class

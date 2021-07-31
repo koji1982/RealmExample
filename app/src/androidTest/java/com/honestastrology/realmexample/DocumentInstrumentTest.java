@@ -148,7 +148,7 @@ public class DocumentInstrumentTest {
             assertNull( document.getText() );
             //DB内のDocumentは更新されていないことを確認
             Document fromDB = _dbOperator.getRealmObject(
-                    Document.class, Document.PRIMARY_KEY, document.getId());
+                    Document.class, Document.PRIMARY_KEY, document.getId() );
             assertEquals( Document.EMPTY_STRING, fromDB.getText() );
         });
     }
@@ -174,7 +174,6 @@ public class DocumentInstrumentTest {
         });
     }
     
-    //ヘルパー関数
     private void setupField(MainActivity activity){
         if( _isInitialized ) return;
         _dbOperator = swapInMemoryOperator( activity );

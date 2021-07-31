@@ -22,4 +22,5 @@ public class TestHelper {
         List<Document> documentList = createDocumentList();
         return documentList.iterator();
     }
+    
 }

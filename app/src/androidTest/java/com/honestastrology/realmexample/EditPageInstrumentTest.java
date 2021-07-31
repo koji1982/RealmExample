@@ -24,13 +24,6 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class EditPageInstrumentTest {
-    //Activity関連のInstrumentedTestは基本的に、
-    //ActivityScenarioのonActivity()のパラメータ
-    //ActivityAction.perform()メソッドのスコープ内で
-    //セットアップ、テストメソッドの実行、アサーションを行う
-    //参照
-    //https://developer.android.com/guide/components/activities/testing
-    //https://developer.android.com/reference/androidx/test/core/app/ActivityScenario.ActivityAction
     
     private EditPage     _editPage;
     private DBOperator   _dbOperator;
@@ -188,8 +181,6 @@ public class EditPageInstrumentTest {
         });
     }
     
-    
-    //ヘルパー関数
     //ActivityAction.perform()内でなければ、
     //xmlリソースとデータベースに同時にアクセスできないため、
     //@Beforeではなくヘルパー関数としてテスト実行前に呼び出す
@@ -201,7 +192,6 @@ public class EditPageInstrumentTest {
         _isInitialized = true;
     }
     
-    //ヘルパー関数
     private AlertDialog getBackConfirmDialog(){
         try {
             Field field_dialogHolder = _editPage.getClass().getDeclaredField("_backConfirmDialog");

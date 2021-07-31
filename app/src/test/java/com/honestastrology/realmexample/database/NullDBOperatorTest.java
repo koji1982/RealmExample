@@ -78,4 +78,5 @@ public class NullDBOperatorTest {
         assertNull( _nullDBOperator.getRealmObject(
                 Document.class, Document.PRIMARY_KEY, document.getId() ));
     }
+    
 }

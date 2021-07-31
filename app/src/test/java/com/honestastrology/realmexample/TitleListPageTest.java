@@ -84,7 +84,7 @@ public class TitleListPageTest {
         titleList.getOnItemClickListener()
                 .onItemClick(
                         titleList, 
-                        titleList.getChildAt(targetIndex),
+                        titleList.getChildAt( targetIndex ),
                         targetIndex, 
                         titleList.getItemIdAtPosition(targetIndex));
         

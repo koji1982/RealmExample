@@ -32,7 +32,7 @@ public class DBSendCommandInstrumentTest {
         _scenarioRule.getScenario().onActivity( activity -> {
             setupField( activity );
             assertThrows( NullPointerException.class,
-                    () -> UPDATE.execute( null, new Document()) );
+                    () -> UPDATE.execute( null, new Document() ) );
             assertThrows( IllegalArgumentException.class,
                     () -> UPDATE.execute( _dbOperator, null) );
             assertThrows( NullPointerException.class,
@@ -179,7 +179,6 @@ public class DBSendCommandInstrumentTest {
         });
     }
     
-    //ヘルパー関数
     private void setupField(MainActivity activity){
         if( _isInitialized ) return;
         _dbOperator = swapInMemoryOperator( activity );

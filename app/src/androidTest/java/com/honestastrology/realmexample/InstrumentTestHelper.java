@@ -32,32 +32,6 @@ public class InstrumentTestHelper {
         return inMemoryOperator;
     }
     
-//    public static DBOperator swapInMemorySyncOperator(MainActivity activity,
-//                                                      DBOperator.SyncConnectedCallback syncCallback){
-//        try {
-//            Field field_operator = activity.getClass().getDeclaredField("_dbOperator");
-//            field_operator.setAccessible( true );
-//            DBOperator dbOperator = (DBOperator)field_operator.get(activity);
-//            dbOperator.closeAll();
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        DBOperator dbOperator = DBOperator.getInMemorySyncInstance(
-//                                                    activity,
-//                                                    activity.getString(R.string.sync_id),
-//                                                    activity,
-//                                                    syncCallback );
-//        try {
-//            //dbOperatorをinMemoryに入れ替える
-//            Field field = activity.getClass().getDeclaredField("_dbOperator");
-//            field.setAccessible( true );
-//            field.set(activity, dbOperator );
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return dbOperator;
-//    }
-    
     public static EditPage extractEditPage(MainActivity activity){
         try {
             //MainActivityからEditPageを取り出す
